@@ -1,0 +1,149 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.ui;
+
+import crush_saga.data.GridMethods;
+import crush_saga_main.CrushSaga;
+import mini_game.MiniGame;
+import mini_game.Sprite;
+import mini_game.SpriteType;
+import static crush_saga_main.CrushSagaConstants.*;
+import properties_manager.PropertiesManager;
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaTile extends Sprite{
+    private String tileType;//only tileType A,B,C,D,E,F BECAUSE WE MIGHT HAVE TO CREATE AN INFINITE NUMBER
+    //OF TILES IF GAME CONTINUES, NO NEED FOR EACH SPRITE TILE TO HAVE INDIVIDUAL SPRITETYPEID
+    private int gridColumn;
+    private int gridRow;
+    private float targetX;
+    private float targetY;
+    private boolean isInGrid = false;
+    private boolean movingToTarget;
+    
+    private GridMethods gm;
+    public CrushSagaTile(SpriteType initSpriteType,float initX, float initY,
+                           float initVx,float initVy,String initState,String initTileType)
+    {
+        super(initSpriteType,initX,initY,initVx,initVy,initState);
+        tileType = initTileType;
+    }
+    public boolean isMovingToTarget()
+    {
+        return movingToTarget;
+    }
+    public String getTileType()   
+    { 
+        return tileType;  
+    }
+    public boolean getIsInGrid()
+    {
+        return isInGrid;
+    }
+    public int getGridColumn() 
+    { 
+        return gridColumn; 
+    }
+    
+    public int getGridRow() 
+    { 
+        return gridRow; 
+    }
+    
+    public float getTargetX() 
+    { 
+        return targetX; 
+    }
+    
+    public float getTargetY() 
+    { 
+        return targetY; 
+    }
+    
+    public void setGridCell(int initGridColumn, int initGridRow)
+    {
+        gridColumn = initGridColumn;
+        gridRow = initGridRow;
+        isInGrid = true;
+    }
+    public void setIsInGrid(boolean in)
+    {
+        isInGrid = in;
+    }
+    public void setTarget(float initTargetX, float initTargetY) 
+    {
+        targetX = initTargetX; 
+        targetY = initTargetY;
+    }  
+    public boolean match(CrushSagaTile testTile)
+    {
+        if(testTile.getTileType().equals(tileType))
+        {
+            return true;
+        }
+            return false;
+    }
+    public float calculateDistanceToTarget()
+    {
+        // GET THE X-AXIS DISTANCE TO GO
+        float diffX = targetX - x;
+        
+        // AND THE Y-AXIS DISTANCE TO GO
+        float diffY = targetY - y;
+        
+        // AND EMPLOY THE PYTHAGOREAN THEOREM TO CALCULATE THE DISTANCE
+        float distance = (float)Math.sqrt((diffX * diffX) + (diffY * diffY));
+        
+        // AND RETURN THE DISTANCE
+        return distance;
+    }
+    public void startMovingToTarget(int maxVelocity)
+    {
+        // LET ITS POSITIONG GET UPDATED
+        movingToTarget = true;
+        
+        // CALCULATE THE ANGLE OF THE TRAJECTORY TO THE TARGET
+        float diffX = targetX - x;
+        float diffY = targetY - y;
+        float tanResult = diffY/diffX;
+        float angleInRadians = (float)Math.atan(tanResult);
+        
+        // COMPUTE THE X VELOCITY COMPONENT
+        vX = (float)(maxVelocity * Math.cos(angleInRadians));
+        
+        // CLAMP THE VELOCTY IN CASE OF NEGATIVE ANGLES
+        if ((diffX < 0) && (vX > 0)) vX *= -1;
+        if ((diffX > 0) && (vX < 0)) vX *= -1;
+        
+        // COMPUTE THE Y VELOCITY COMPONENT
+        vY = (float)(maxVelocity * Math.sin(angleInRadians));        
+        
+        // CLAMP THE VELOCITY IN CASE OF NEGATIVE ANGLES
+        if ((diffY < 0) && (vY > 0)) vY *= -1;
+        if ((diffY > 0) && (vY < 0)) vY *= -1;
+    }
+    
+    public void update(MiniGame game)
+    {
+        // IF NOT, IF THIS TILE IS ALMOST AT ITS TARGET DESTINATION,
+        // JUST GO TO THE TARGET AND THEN STOP MOVING
+        if (calculateDistanceToTarget() < TILE_GRID_VELOCITY)
+        {
+            vX = 0;
+            vY = 0;
+            x = targetX;
+            y = targetY;
+            movingToTarget = false;
+        }
+        // OTHERWISE, JUST DO A NORMAL UPDATE, WHICH WILL CHANGE ITS POSITION
+        // USING ITS CURRENT VELOCITY.
+        else
+        {
+            super.update(game);
+        }
+    }
+}

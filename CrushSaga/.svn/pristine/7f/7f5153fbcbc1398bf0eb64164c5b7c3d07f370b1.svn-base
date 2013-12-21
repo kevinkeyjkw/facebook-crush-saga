@@ -1,0 +1,53 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga_main;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaConstants {
+
+    public static final String SPLASH_SCREEN_STATE = "SPLASH_SCREEN_STATE";
+    public static final String SAGA_SCREEN_STATE = "SAGA_SCREEN_STATE";
+    public static final String GAME_SCREEN_STATE = "GAME_SCREEN_STATE";
+    public static final String BACKGROUND_TYPE = "BACKGROUND_TYPE";
+    
+    public static final int QUIT_LEVEL_BUTTON_X = 0;
+    public static final int QUIT_LEVEL_BUTTON_Y = 500;
+    public static final int SAGA_SCREEN_INITIAL_Y = -860;
+    public static final int LEVEL_DIALOG_X = 450;
+    public static final int LEVEL_DIALOG_Y = 50;
+    public static final int LEVEL_DIALOG_DESCRIPTION_X = 570;
+    public static final int LEVEL_DIALOG_DESCRIPTION_Y = 250;
+    public static final int SAGA_PLAY_LEVEL_BUTTON_X = 480;
+    public static final int SAGA_PLAY_LEVEL_BUTTON_Y = 510;
+    public static final int LEVEL_DIALOG_CLOSE_BUTTON_X = 680;
+    public static final int LEVEL_DIALOG_CLOSE_BUTTON_Y = 510;
+    public static final int[] LEVEL_POSITIONS_X = {150,900,700,300,150,850,800,1150,850,500};
+    public static final int[] LEVEL_POSITIONS_Y = {500,440,150,100,-150,-300,0,50,-500,-600};
+    
+    public static final String INVISIBLE_STATE = "INVISIBLE_STATE";
+    public static final String VISIBLE_STATE = "VISIBLE_STATE";
+    public static final String MOUSE_OVER_STATE = "MOUSE_OVER_STATE";
+    
+    public static final int SPLASH_BUTTON_WIDTH = 200;
+    public static final int SPLASH_BUTTON_Y = 450;
+    public static final int SPLASH_BUTTON_MARGIN = 5;
+    public static final String SPLASH_BUTTON_TYPE = "SPLASH_BUTTON_TYPE";
+    public static final int SCROLL_BUTTON_MARGIN = 120; 
+    
+    public static final String LEVEL_DIALOG_CLOSE_BUTTON_TYPE = "LEVEL_DIALOG_CLOSE_BUTTON_TYPE";
+    public static final String QUIT_LEVEL_BUTTON_TYPE = "QUIT_LEVEL_BUTTON_TYPE";
+    public static final String SAGA_PLAY_LEVEL_BUTTON_TYPE = "SAGA_PLAY_LEVEL_BUTTON_TYPE";
+    public static final String LEVEL_DIALOG_TYPE = "LEVEL_DIALOG_TYPE";
+    public static final String LEVEL_SELECT_BUTTON_TYPE = "LEVEL_SELECT_BUTTON_TYPE";
+    public static final String PLAY_GAME_BUTTON_TYPE = "PLAY_GAME_BUTTON_TYPE";
+    public static final String RESET_GAME_BUTTON_TYPE = "RESET_GAME_BUTTON_TYPE";
+    public static final String QUIT_GAME_BUTTON_TYPE = "QUIT_GAME_BUTTON_TYPE";
+    public static final String SCROLL_UP_BUTTON_TYPE = "SCROLL_UP_BUTTON_TYPE";
+    public static final String SCROLL_DOWN_BUTTON_TYPE = "SCROLL_DOWN_BUTTON_TYPE";
+    public static final String SAGA_QUIT_GAME_BUTTON_TYPE = "SAGA_QUIT_GAME_BUTTON_TYPE";
+}

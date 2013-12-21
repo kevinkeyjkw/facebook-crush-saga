@@ -1,0 +1,489 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.data;
+
+import crush_saga.ui.CrushSagaMiniGame;
+import static crush_saga_main.CrushSagaConstants.*;
+import crush_saga.ui.CrushSagaPanel;
+import crush_saga.ui.CrushSagaTile;
+import crush_saga_main.CrushSaga.CrushSagaPropertyType;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import mini_game.MiniGame;
+import mini_game.MiniGameDataModel;
+import mini_game.Sprite;
+import mini_game.SpriteType;
+import properties_manager.PropertiesManager;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaDataModel extends MiniGameDataModel{
+    private MiniGame game;
+    private CrushSagaPanel sagaPanel;
+    private SpriteType tileASpriteType;
+    private SpriteType tileBSpriteType;
+    private SpriteType tileCSpriteType;
+    private SpriteType tileDSpriteType;
+    private SpriteType tileESpriteType;
+    private SpriteType tileFSpriteType;
+    
+    CrushSagaTile selectedTile = null;
+    
+    private int gridColumns = 10;
+    private int gridRows = 10;
+    private CrushSagaTile[][] tileGrid;
+    private ArrayList<CrushSagaTile> stackTiles;
+    private ArrayList<CrushSagaTile> movingTiles;
+    public CrushSagaDataModel(MiniGame initMiniGame)
+    {
+        game = initMiniGame;
+        sagaPanel = (CrushSagaPanel)game.getCanvas();
+        stackTiles = new ArrayList();
+        tileGrid = new CrushSagaTile[gridColumns][gridRows];
+        movingTiles = new ArrayList();
+        //only has to be done once during entire application
+         initTileSpriteTypes();
+    }
+    
+    public void initTileSpriteTypes()
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        String imgPath = props.getProperty(CrushSagaPropertyType.IMG_PATH);
+        String tile_image_file_path;
+        BufferedImage img;
+        //initiate tileASpriteType
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_A_TILE_IMAGE_NAME));
+        tileASpriteType = new SpriteType(TILE_SPRITE_TYPE_A);
+        tileASpriteType.addState(INVISIBLE_STATE, img);
+        tileASpriteType.addState(VISIBLE_STATE, img);
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_A_TILE_SELECTED_IMAGE_NAME));
+        tileASpriteType.addState(SELECTED_STATE,img);
+        //initiate tileBSpriteType
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_B_TILE_IMAGE_NAME));
+        tileBSpriteType = new SpriteType(TILE_SPRITE_TYPE_B);
+        tileBSpriteType.addState(INVISIBLE_STATE, img);
+        tileBSpriteType.addState(VISIBLE_STATE, img);
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_B_TILE_SELECTED_IMAGE_NAME));
+        tileBSpriteType.addState(SELECTED_STATE,img);
+        //initiate tileCSpriteType
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_C_TILE_IMAGE_NAME));
+        tileCSpriteType = new SpriteType(TILE_SPRITE_TYPE_C);
+        tileCSpriteType.addState(INVISIBLE_STATE, img);
+        tileCSpriteType.addState(VISIBLE_STATE, img);
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_C_TILE_SELECTED_IMAGE_NAME));
+        tileCSpriteType.addState(SELECTED_STATE,img);
+        //initiate tileDSpriteType
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_D_TILE_IMAGE_NAME));
+        tileDSpriteType = new SpriteType(TILE_SPRITE_TYPE_D);
+        tileDSpriteType.addState(INVISIBLE_STATE, img);
+        tileDSpriteType.addState(VISIBLE_STATE, img);
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_D_TILE_SELECTED_IMAGE_NAME));
+        tileDSpriteType.addState(SELECTED_STATE,img);
+        //initiate tileESpriteType
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_E_TILE_IMAGE_NAME));
+        tileESpriteType = new SpriteType(TILE_SPRITE_TYPE_E);
+        tileESpriteType.addState(INVISIBLE_STATE, img);
+        tileESpriteType.addState(VISIBLE_STATE, img);
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_E_TILE_SELECTED_IMAGE_NAME));
+        tileESpriteType.addState(SELECTED_STATE,img);
+        //initiate tileFSpriteType
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_F_TILE_IMAGE_NAME));
+        tileFSpriteType = new SpriteType(TILE_SPRITE_TYPE_F);
+        tileFSpriteType.addState(INVISIBLE_STATE, img);
+        tileFSpriteType.addState(VISIBLE_STATE, img);
+        img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.TYPE_F_TILE_SELECTED_IMAGE_NAME));
+        tileFSpriteType.addState(SELECTED_STATE,img);
+    }
+    public void initTiles()
+    {
+        int totalInitialTiles = gridColumns * gridRows;
+        
+        for(int i = 0;i < totalInitialTiles;i++)
+        {
+            stackTiles.add(generateRandomTile());
+        }
+        
+    }
+    public CrushSagaTile generateRandomTile()
+    {
+        double rand = Math.random();
+            if(rand < 0.16){
+                return createTypeATile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else if(rand < 0.32){
+                return createTypeBTile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else if(rand < 0.48){
+                return createTypeCTile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else if(rand < 0.64){
+                return createTypeDTile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else if(rand < 0.8){
+                return createTypeETile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else{
+                return createTypeFTile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }
+            
+        
+    }
+    //GENERATES A TYPE A TILE
+    public CrushSagaTile createTypeATile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(tileASpriteType,initX,initY,initVx,initVy,initState,TILE_TYPE_A);
+        return newTile;
+    }
+    //GENERATES A TYPE B TILE
+    public CrushSagaTile createTypeBTile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(tileBSpriteType,initX,initY,initVx,initVy,initState,TILE_TYPE_B);
+        return newTile;
+    }
+    //GENERATES A TYPE C TILE
+    public CrushSagaTile createTypeCTile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(tileCSpriteType,initX,initY,initVx,initVy,initState,TILE_TYPE_C);
+        return newTile;
+    }
+    //GENERATES A TYPE D TILE
+    public CrushSagaTile createTypeDTile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(tileDSpriteType,initX,initY,initVx,initVy,initState,TILE_TYPE_D);
+        return newTile;
+    }
+    //GENERATES A TYPE E TILE
+    public CrushSagaTile createTypeETile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(tileESpriteType,initX,initY,initVx,initVy,initState,TILE_TYPE_E);
+        return newTile;
+    }
+    //GENERATES A TYPE F TILE
+    public CrushSagaTile createTypeFTile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(tileFSpriteType,initX,initY,initVx,initVy,initState,TILE_TYPE_F);
+        return newTile;
+    }
+    
+    public void scrollUp()
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Sprite s = game.getGUIDecor().get(BACKGROUND_TYPE);
+        if(((CrushSagaMiniGame)game).getCurrentScreenState().equals(SAGA_SCREEN_STATE) && s.getY() < 0)
+        {
+        float currentY = s.getY();
+        s.setY(currentY + 10);
+        
+        ArrayList<String> levels = props.getPropertyOptionsList(CrushSagaPropertyType.LEVEL_OPTIONS);
+        for(String level: levels)
+            {
+            float levelY = game.getGUIButtons().get(level).getY();
+            game.getGUIButtons().get(level).setY(levelY + 10);
+            }
+        }
+    }
+    public void scrollDown()
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Sprite s = game.getGUIDecor().get(BACKGROUND_TYPE);
+        if(((CrushSagaMiniGame)game).getCurrentScreenState().equals(SAGA_SCREEN_STATE) && s.getY() > SAGA_SCREEN_INITIAL_Y )
+        {
+        float currentY = s.getY();
+        s.setY(currentY - 10);
+        
+        ArrayList<String> levels = props.getPropertyOptionsList(CrushSagaPropertyType.LEVEL_OPTIONS);
+        for(String level: levels)
+            {
+            float levelY = game.getGUIButtons().get(level).getY();
+            game.getGUIButtons().get(level).setY(levelY - 10);
+            }
+        
+        }
+    }
+    public void displayLevelDialog()
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).setState(VISIBLE_STATE);
+        //activate level buttons when level dialog is open
+        ArrayList<String> levels = props.getPropertyOptionsList(CrushSagaPropertyType.LEVEL_OPTIONS);
+        for(String level: levels)
+        {
+            game.getGUIButtons().get(level).setEnabled(false);
+        }
+    }
+    public void closeLevelDialog()
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).setState(INVISIBLE_STATE);
+        //disabled level buttons when level dialog is open
+        ArrayList<String> levels = props.getPropertyOptionsList(CrushSagaPropertyType.LEVEL_OPTIONS);
+        for(String level: levels)
+        {
+            game.getGUIButtons().get(level).setEnabled(true);
+        }
+    }
+    //only called when switching between screens, just empty the stack and tile grid, when play level, generate new tiles
+    public void enableTiles(boolean enable)
+    {
+        stackTiles = new ArrayList();
+        tileGrid = new CrushSagaTile[gridColumns][gridRows];
+        
+    }
+    public int calculateGridCellColumn(int x)
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameWidth = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_WIDTH.toString()));
+        int columnValue = gridColumns - ((int)(gameWidth - x))/TILE_IMAGE_WIDTH - 1;
+        return columnValue;
+    }
+    public int calculateGridCellRow(int y)
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameHeight = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_HEIGHT.toString()));
+        int rowValue = gridRows - ((int)(gameHeight - y))/TILE_IMAGE_HEIGHT - 1;
+        return rowValue;
+    }
+    public int calculateTileXInGrid(int column)
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameWidth = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_WIDTH.toString()));
+        int cellWidth = TILE_IMAGE_WIDTH;
+        return (int)(gameWidth - (cellWidth * (gridColumns -column)));
+    }
+    public int calculateTileYInGrid(int row)
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameHeight = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_HEIGHT.toString()));
+        int cellHeight = TILE_IMAGE_HEIGHT;
+        return (int)(gameHeight - (cellHeight * (gridRows -row)));
+    }
+    @Override
+    public void checkMousePressOnSprites(MiniGame game, int x, int y) 
+    {
+        int col = calculateGridCellColumn(x);
+        int row = calculateGridCellRow(y);
+        if(col < gridColumns && col >= 0 && row < gridRows && row >= 0 && tileGrid[col][row] != null)
+            selectTile(tileGrid[col][row]);
+        
+    }
+    //THIS METHOD CHANGES THE TILE TO SELECTED_STATE OR VISIBLE_STATE
+    public void selectTile(CrushSagaTile tileSelected)
+    {
+        //NO TILE HAS BEEN SELECTED
+        if(selectedTile == null)
+        {
+            selectedTile = tileSelected;
+            tileSelected.setState(SELECTED_STATE);
+        }else if(selectedTile == tileSelected)
+        {
+            tileSelected.setState(VISIBLE_STATE);
+            selectedTile = null;
+        }else if(XOR(tileSelected.getGridRow() == selectedTile.getGridRow(),tileSelected.getGridColumn() == selectedTile.getGridColumn())
+                && (tileSelected.getGridRow() == (selectedTile.getGridRow() -1) || 
+                tileSelected.getGridRow() == (selectedTile.getGridRow() + 1) ||
+                tileSelected.getGridColumn() == (selectedTile.getGridColumn() + 1) ||
+                tileSelected.getGridColumn() == (selectedTile.getGridColumn() - 1))){
+            //ALREADY A TILE SELECTED, JUST CHECK IF LEGAL MOVE, IF SO THEN SWITCH THE TWO TILES,
+            //DELETEMATCHES() WILL GET RID OF THEM FILL EMPTYCELLS() WILL FILL UP THE VACANT SPACES
+            //THIS CONDITION CHECKS IF IT IS LEGAL MOVE, ONE TILE N,S,EAST,WEST
+            swapTiles(selectedTile,tileSelected);
+            //ADD INTO MOVING TILES
+            //CALL DELETEMATCHES(), IT SHOULD RETURN BOOLEAN, IF RETURN FALSE, MOVE TILES BACK TO ORIGINAL POSITIONS, IF TRUE, DO NOTHING
+            boolean matches = deleteMatches();
+            if(!matches){
+                swapTiles(selectedTile,tileSelected);//NO MATCHES FOUND, SO ILLEGAL MOVE, SWAP THEM BACK
+            }
+            while(matches){
+                matches = deleteMatches();
+            }
+            
+            /*if(!deleteMatches())
+            {
+                swapTiles(selectedTile,tileSelected);
+            }*/
+            selectedTile.setState(VISIBLE_STATE);
+            selectedTile = null;
+        }
+    }
+    public boolean deleteMatches()
+    {
+        //CHECK GRID FOR 3XMATCHES,4XMATCHES,5XMATCHES,ONLY VERTICAL OR HORIZONTAL!
+        //CHECK 5 IN A ROW FIRST, THEN 4 IN A ROW, THEN FINALLY 3 IN A ROW
+        //CHECK HORIZONTALLY THEN VERTICALLY
+        for(int i = 0;i < gridColumns;i++){//initiated as such: tileGrid[gridColumns][gridRows]
+            for(int j = 0;j < gridRows;j++){
+                if(j < gridRows - 4 && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+1].getSpriteType().getSpriteTypeID()) 
+                        && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+2].getSpriteType().getSpriteTypeID())
+                        && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+3].getSpriteType().getSpriteTypeID())
+                        && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+4].getSpriteType().getSpriteTypeID()))
+                {//IF 5 IN A ROW
+                    //DELETE THOSE TILES
+                    tileGrid[i][j] = null;
+                    tileGrid[i][j+1] = null;
+                    tileGrid[i][j+2] = null;
+                    tileGrid[i][j+3] = null;
+                    tileGrid[i][j+4] = null;
+                    //REPLACE THEM WITH TILES ABOVE THEM IF ANY
+                        for(int k=j-1;k >= 0;k--)
+                        {
+                            moveTileWithinGrid(tileGrid[i][k],i,k+5);
+                            tileGrid[i][k] = null;
+                        }
+                        //FILL IN EMPTY CELLS
+                        fillEmptyCells();
+                    return true;
+                }else if(j < gridRows - 3 && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+1].getSpriteType().getSpriteTypeID()) 
+                        && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+2].getSpriteType().getSpriteTypeID())
+                        && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+3].getSpriteType().getSpriteTypeID()))
+                {//4 IN A ROW
+                    tileGrid[i][j] = null;
+                    tileGrid[i][j+1] = null;
+                    tileGrid[i][j+2] = null;
+                    tileGrid[i][j+3] = null;
+                    for(int k=j-1;k >= 0;k--)
+                        {
+                            moveTileWithinGrid(tileGrid[i][k],i,k+4);
+                            tileGrid[i][k] = null;
+                        }
+                    fillEmptyCells();
+                    return true;
+                }else if(j < gridRows - 2 && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+1].getSpriteType().getSpriteTypeID()) 
+                        && tileGrid[i][j].getSpriteType().getSpriteTypeID().equals(tileGrid[i][j+2].getSpriteType().getSpriteTypeID()))//3 IN A ROW
+                {
+                    tileGrid[i][j] = null;
+                    tileGrid[i][j+1] = null;
+                    tileGrid[i][j+2] = null;
+                    for(int k=j-1;k >= 0;k--)
+                        {
+                            moveTileWithinGrid(tileGrid[i][k],i,k+3);
+                            tileGrid[i][k] = null;
+                        }
+                    fillEmptyCells();
+                    return true;
+                }//FINISH CHECKING MATCHES VERTICALLY
+                
+            }
+        }
+        return false;
+    }
+    public void moveTileWithinGrid(CrushSagaTile tileToBeMoved,int gridCol,int gridRow)
+    {
+            tileToBeMoved.setTarget(calculateTileXInGrid(gridCol), calculateTileYInGrid(gridRow));
+            tileToBeMoved.startMovingToTarget(MAX_TILE_VELOCITY);
+            movingTiles.add(tileToBeMoved);
+            tileToBeMoved.setGridCell(gridCol, gridRow);
+            tileGrid[gridCol][gridRow] = tileToBeMoved;
+    }
+    public void fillEmptyCells()
+    {
+        for(int i = 0;i < gridColumns;i++){
+            for(int j = 0;j < gridRows;j++){
+                if(tileGrid[i][j] == null){
+                    CrushSagaTile newTile = generateRandomTile();
+                    moveTileWithinGrid(newTile,i,j);
+                }
+            }
+        }
+    }
+    
+    public void swapTiles(CrushSagaTile t1,CrushSagaTile t2)
+    {
+            int tempCol = t2.getGridColumn();
+            int tempRow = t2.getGridRow();
+            moveTileWithinGrid(t2,t1.getGridColumn(),t1.getGridRow());
+            moveTileWithinGrid(t1,tempCol,tempRow);
+    }
+    public boolean XOR(boolean x,boolean y)
+    {
+        if((x && !y) || (!x && y))
+            return true;
+        return false;
+    }
+    public int getGridColumns()
+    {
+        return gridColumns;
+    }
+    public int getGridRows()
+    {
+        return gridRows;
+    }
+    public void setGridColumns(int columns)
+    {
+        gridColumns = columns;
+    }
+    public void setGridRows(int rows)
+    {
+        gridRows = rows;
+    }
+    public ArrayList<CrushSagaTile> getStackTiles()
+    {
+        return stackTiles;
+    }
+    public Iterator<CrushSagaTile> getMovingTiles()
+    {
+        return movingTiles.iterator();
+    }
+    public CrushSagaTile [][] getTileGrid()
+    {
+        return tileGrid;
+    }
+    public void emptyStackTiles()
+    {
+        stackTiles = new ArrayList();
+    }
+    /*
+     * Called when a new game is started
+     */
+    @Override
+    public void reset(MiniGame game) {
+        selectedTile = null;
+        emptyStackTiles();//empty contents of stack and start brand new
+        initTiles();//initiate random tiles again
+        for(int i = 0;i < gridColumns;i++){
+            for(int j = 0;j < gridRows;j++){
+                CrushSagaTile tile = stackTiles.remove(stackTiles.size()-1);
+                //put it in grid
+                moveTileWithinGrid(tile,i,j);
+            }
+        }
+        beginGame();
+        boolean matches = true;
+        while(matches){
+            matches = deleteMatches();
+        }
+            
+    }
+    /**
+     * Called each frame, this method updates all the game objects.
+     * 
+     * @param game The Mahjong game to be updated.
+     */
+    @Override
+    public void updateAll(MiniGame game) {
+     
+        try{
+            game.beginUsingData();
+            
+            for(int i = 0;i < movingTiles.size();i++)
+            {
+                CrushSagaTile tile = movingTiles.get(i);
+                tile.update(game);
+                
+                if(!tile.isMovingToTarget())
+                {
+                    movingTiles.remove(tile);
+                }   
+            }
+        }finally{
+            game.endUsingData();
+        }
+        
+    }
+
+    @Override
+    public void updateDebugText(MiniGame game) {
+     
+    }
+    
+}

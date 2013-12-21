@@ -1,0 +1,30 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.events;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import crush_saga.data.CrushSagaDataModel;
+import crush_saga.ui.CrushSagaMiniGame;
+/**
+ *
+ * @author Kevin
+ */
+public class ScrollKeyHandler extends KeyAdapter{
+    private CrushSagaMiniGame game;
+    private CrushSagaDataModel data;
+    public ScrollKeyHandler(CrushSagaMiniGame miniGame)
+    {
+        game = miniGame;
+        data = (CrushSagaDataModel)game.getDataModel();
+    }
+    public void keyPressed(KeyEvent ke)
+    {
+        if(ke.getKeyCode() == KeyEvent.VK_DOWN)
+            data.scrollDown();
+        else if(ke.getKeyCode() == KeyEvent.VK_UP)
+            data.scrollUp();
+    }
+}

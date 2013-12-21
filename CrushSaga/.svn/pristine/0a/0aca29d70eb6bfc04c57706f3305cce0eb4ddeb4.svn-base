@@ -1,0 +1,25 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.events;
+
+import crush_saga.data.CrushSagaDataModel;
+import crush_saga.ui.CrushSagaMiniGame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
+ *
+ * @author Kevin
+ */
+public class ActivateMalletHandler implements ActionListener{
+    private CrushSagaMiniGame game;
+    public ActivateMalletHandler(CrushSagaMiniGame miniGame){
+        game = miniGame;
+    }
+    public void actionPerformed(ActionEvent ae){
+        ((CrushSagaDataModel)game.getDataModel()).activateMallet();
+    }
+    
+}

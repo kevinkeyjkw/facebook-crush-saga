@@ -1,0 +1,63 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.events;
+
+import crush_saga.data.CrushSagaDataModel;
+import crush_saga.ui.CrushSagaMiniGame;
+import crush_saga.ui.CrushSagaPanel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import static crush_saga_main.CrushSagaConstants.*;
+
+/**
+ *
+ * @author Kevin
+ */
+public class KeyHandler extends KeyAdapter{
+    private CrushSagaMiniGame game;
+    
+    public KeyHandler(CrushSagaMiniGame initGame)
+    {
+        game = initGame;
+    }
+    @Override
+    public void keyPressed(KeyEvent ke)
+    {
+        CrushSagaDataModel data = (CrushSagaDataModel)game.getDataModel();
+        if(ke.getKeyCode() == KeyEvent.VK_1)
+        {
+            data.initTestOneGrid();
+        }else if(ke.getKeyCode() == KeyEvent.VK_DOWN)
+        {
+            data.scrollDown();
+        }else if(ke.getKeyCode() == KeyEvent.VK_UP)
+        {
+            data.scrollUp();
+        }else if(ke.getKeyCode() == KeyEvent.VK_2)
+        {
+            data.initTestTwoGrid();
+        }else if(ke.getKeyCode() == KeyEvent.VK_3)
+        {
+            data.initTestThreeGrid();
+        }else if(ke.getKeyCode() == KeyEvent.VK_4)
+        {
+            data.initTestFourGrid();
+        }else if(ke.getKeyCode() == KeyEvent.VK_5)
+        {
+            data.initTestFiveGrid();
+        }else if(ke.getKeyCode() == KeyEvent.VK_6)
+        {
+            data.createNoMovesGrid();
+        }else if(ke.getKeyCode() == KeyEvent.VK_7)
+        {
+            data.getGridMethods().deleteTileType(TILE_TYPE_A);
+        }else if(ke.getKeyCode() == KeyEvent.VK_8)
+        {
+            data.getGridMethods().moveAllTilesDown();
+        }
+    }
+    
+    
+}

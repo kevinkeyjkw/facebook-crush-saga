@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    The properties in this file are specific to the zombie crush saga flavor of the game.
+-->
+<properties>
+    <property_list>    
+        <property name="GAME_TITLE_TEXT"            value="Zombie Crush Saga"></property>
+        
+        
+        <!-- BIG, FULL VIEWPORT BACKGROUND SCREEN IMAGES -->
+        <property name="SPLASH_BACKGROUND_IMAGE_NAME"   value="./zombie_crush_saga/UIzombie_crush_sagaSplashBackground.png"></property>
+		<property name ="SAGA_BACKGROUND_IMAGE_NAME"    value="./zombie_crush_saga/UIzombie_crush_sagaSagaBackground.png"></property>
+        <property name="GAME_BACKGROUND_IMAGE_NAME"     value="./zombie_crush_saga/UIzombie_crush_sagaGameBackground.png"></property>
+        
+        
+        
+        <property name="SAGA_QUIT_GAME_BUTTON_IMAGE_NAME"              value="./zombie_crush_saga/SagaQuitGameButton.png"></property>
+        <property name="SAGA_QUIT_GAME_MOUSE_OVER_BUTTON_IMAGE_NAME"   value="./zombie_crush_saga/SagaQuitGameButtonMouseOver.png"></property>
+        <property name="LEVEL_DIALOG_IMAGE_NAME"                       value="./zombie_crush_saga/UIzombie_crush_sagaLevelDialog.png"></property>
+        
+    </property_list>
+    <property_options_list>
+        <property_options name="SPLASH_SCREEN_BUTTONS_IMAGE_NAMES">
+            <option>./zombie_crush_saga/PlayGameButton.png</option>
+            <option>./zombie_crush_saga/QuitGameButton.png</option>
+            <option>./zombie_crush_saga/ResetGameButton.png</option>
+        </property_options>
+        <property_options name="SPLASH_SCREEN_BUTTONS_MOUSE_OVER_IMAGE_NAMES">
+            <option>./zombie_crush_saga/PlayGameButtonMouseOver.png</option>
+			<option>./zombie_crush_saga/QuitGameButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/ResetGameButtonMouseOver.png</option>
+        </property_options>
+        <property_options name="SCROLL_BUTTONS_IMAGE_NAMES">
+            <option>./zombie_crush_saga/ScrollUpButton.png</option>
+            <option>./zombie_crush_saga/ScrollDownButton.png</option>
+        </property_options>
+        <property_options name="SCROLL_BUTTONS_MOUSE_OVER_IMAGE_NAMES">
+            <option>./zombie_crush_saga/ScrollUpButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/ScrollDownButtonMouseOver.png</option>
+        </property_options>
+		<property_options name="LEVEL_OPTIONS">
+            <option>./zombie_crush_saga/LevelOne.zcs</option>
+            <option>./zombie_crush_saga/LevelTwo.zcs</option>
+            <option>./zombie_crush_saga/LevelThree.zcs</option>
+            <option>./zombie_crush_saga/LevelFour.zcs</option>
+			<option>./zombie_crush_saga/LevelFive.zcs</option>
+			<option>./zombie_crush_saga/LevelSix.zcs</option>
+			<option>./zombie_crush_saga/LevelSeven.zcs</option>
+			<option>./zombie_crush_saga/LevelEight.zcs</option>
+			<option>./zombie_crush_saga/LevelNine.zcs</option>
+			<option>./zombie_crush_saga/LevelTen.zcs</option>
+        </property_options>
+        <property_options name="LEVEL_BUTTONS_IMAGE_NAMES">
+            <option>./zombie_crush_saga/LevelOneButton.png</option>
+            <option>./zombie_crush_saga/LevelTwoButton.png</option>
+            <option>./zombie_crush_saga/LevelThreeButton.png</option>
+            <option>./zombie_crush_saga/LevelFourButton.png</option>
+            <option>./zombie_crush_saga/LevelFiveButton.png</option>
+            <option>./zombie_crush_saga/LevelSixButton.png</option>
+            <option>./zombie_crush_saga/LevelSevenButton.png</option>
+            <option>./zombie_crush_saga/LevelEightButton.png</option>
+            <option>./zombie_crush_saga/LevelNineButton.png</option>
+            <option>./zombie_crush_saga/LevelTenButton.png</option>
+        </property_options>
+		<property_options name="LEVEL_BUTTONS_MOUSE_OVER_IMAGE_NAMES">
+            <option>./zombie_crush_saga/LevelOneButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelTwoButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelThreeButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelFourButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelFiveButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelSixButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelSevenButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelEightButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelNineButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/LevelTenButtonMouseOver.png</option>
+        </property_options>
+		
+    </property_options_list>
+</properties>

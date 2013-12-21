@@ -1,0 +1,678 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.data;
+
+import crush_saga.ui.CrushSagaTile;
+import crush_saga_main.CrushSaga;
+import static crush_saga_main.CrushSagaConstants.*;
+import static crush_saga.data.CrushSagaDataModel.*;
+import properties_manager.PropertiesManager;
+/**
+ *
+ * @author Kevin
+ */
+public class GridMethods {
+    CrushSagaDataModel data;
+  //  CrushSagaTile tileGrid[][];
+    int gridRows,gridColumns;
+    public GridMethods(CrushSagaDataModel d){
+        data = d;
+        //tileGrid = data.getTileGrid();
+        gridRows = data.getGridRows();
+        gridColumns = data.getGridColumns();
+    }
+    public boolean deleteMatches()
+    {
+        //CHECK GRID FOR 3XMATCHES,4XMATCHES,5XMATCHES,ONLY VERTICAL OR HORIZONTAL!
+        //CHECK 5 IN A ROW FIRST, THEN 4 IN A ROW, THEN FINALLY 3 IN A ROW
+        //CHECK VERTICALLY THEN HORIZONTALLY
+        for(int i = 0;i < gridColumns;i++){//initiated as such: tileGrid[gridColumns][gridRows]
+            for(int j = 0;j < gridRows;j++){
+                if(deleteFiveInRowVertical(i,j)){
+                    data.addToGameScore(200);
+                    return true;
+                }else if(deleteFourInRowVertical(i,j))
+                {//4 IN A ROW
+                    data.addToGameScore(100);
+                    return true;
+                }else if(j < gridRows - 2 && tileGrid[i][j].getTileType().equals(tileGrid[i][j+1].getTileType()) 
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i][j+2].getTileType()))
+                {//3 IN A ROW VERTICALLY
+                    if(deleteNorthEastL(i,j))
+                    {
+                        data.addToGameScore(300);
+                    }else if(deleteSouthEastL(i,j))
+                    { 
+                        data.addToGameScore(300);
+                    }else if(deleteSouthWestL(i,j))
+                    { 
+                        data.addToGameScore(300);
+                    }else if(deleteNorthWestL(i,j))
+                    { 
+                        data.addToGameScore(300);
+                    }else if(deleteNorthT(i,j))
+                    {
+                        data.addToGameScore(300);
+                    }else if(deleteEastT(i,j))
+                    {
+                        data.addToGameScore(350);
+                    }else if(deleteSouthT(i,j))
+                    { 
+                        data.addToGameScore(350);
+                    }else if(deleteWestT(i,j))
+                    {
+                        data.addToGameScore(350);
+                    }else
+                    {//ONLY THREE IN A ROW, SO ADD SCORE, 
+                        data.addToGameScore(50);
+                    }
+                    //DELETES THREE VERTICALLY NO MATTER WHAT L SHAPE
+                    tileGrid[i][j] = null;
+                    tileGrid[i][j+1] = null;
+                    tileGrid[i][j+2] = null;
+                    for(int k=j-1;k >= 0;k--)
+                        {
+                            moveTileWithinGrid(tileGrid[i][k],i,k+3,TILE_GRID_VELOCITY);
+                            tileGrid[i][k] = null;
+                        }
+                    fillEmptyCells();
+                    return true;
+                }//FINISHED DELETING MATCHES VERTICALLY
+                
+            }
+        }
+        //NOW DELETE MATCHES HORIZONTALLY
+        for(int j = 0;j < gridRows;j++){
+            for(int i = 0;i < gridColumns;i++){
+                if(deleteFiveInRowHorizontal(i,j))
+                {//IF 5 IN A ROW
+                    data.addToGameScore(200);
+                    return true;
+                }else if(deleteFourInRowHorizontal(i,j))
+                {//4 IN A ROW
+                    data.addToGameScore(100);
+                    return true;
+                }else if(deleteThreeInRowHorizontal(i,j))
+                {//3 IN A ROW 
+                    data.addToGameScore(50);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean deleteNorthT(int i,int j){
+        //%%%
+        // %
+        // %
+        if(i > 0 && i < gridColumns - 1 &&
+                            tileGrid[i][j].getTileType().equals(tileGrid[i-1][j].getTileType())&&
+                            tileGrid[i][j].getTileType().equals(tileGrid[i+1][j].getTileType()))
+                    {
+                        tileGrid[i-1][j] = null;
+                        tileGrid[i+1][j] = null;
+                        int count = 1;
+                        int m = i-1;
+                        while(count >= 0){
+                            for(int k = j-1;k >= 0;k--){
+                                moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                                tileGrid[m][k] = null;
+                            }
+                            count--;
+                            m += 2;
+                        }
+                        return true;
+                    }
+                    return false;
+    }
+    public boolean deleteEastT(int i,int j){
+        //  %
+        //%%%
+        //  %
+        if(i > 1 && 
+                            tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+1].getTileType())&&
+                            tileGrid[i][j].getTileType().equals(tileGrid[i-2][j+1].getTileType()))
+                    {
+                        tileGrid[i-1][j+1] = null;
+                        tileGrid[i-2][j+1] = null;
+                        int count = 1;
+                        int m = i-2;
+                        while(count >= 0){
+                            for(int k = j;k >= 0;k--){
+                                moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                                tileGrid[m][k] = null;
+                            }
+                            count--;
+                            m++;
+                        }
+                        return true;
+                    }
+            return false;
+    }
+    public boolean deleteSouthT(int i,int j){
+        // %
+        // %
+        //%%%
+        if(i > 0 && i < gridColumns - 1 &&
+                            tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+2].getTileType())&&
+                            tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+2].getTileType()))
+                    {
+                        tileGrid[i+1][j+2] = null;
+                        tileGrid[i-1][j+2] = null;
+                        int count = 1;
+                        int m = i-1;
+                        while(count >= 0){
+                            for(int k = j + 1;k >= 0;k--){
+                                moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                                tileGrid[m][k] = null;
+                            }
+                            count--;
+                            m += 2;
+                        }
+                        return true;
+                    }
+                    return false;
+    }
+    public boolean deleteWestT(int i,int j){
+        //%
+        //%%%
+        //%
+        if(i < gridColumns - 2 &&
+                            tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+1].getTileType())&&
+                            tileGrid[i][j].getTileType().equals(tileGrid[i+2][j+1].getTileType()))
+                    {
+                        tileGrid[i+1][j+1] = null;
+                        tileGrid[i+2][j+1] = null;
+                        int count = 1;
+                        int m = i+1;
+                        while(count >= 0){
+                            for(int k = j;k >= 0;k--){
+                                moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                                tileGrid[m][k] = null;
+                            }
+                            count--;
+                            m++;
+                        }
+                        return true;
+                    }
+                    return false;
+    }
+    public boolean deleteNorthEastL(int i,int j){
+        //%%%
+        //  %
+        //  %
+        if(i>= 2 && tileGrid[i][j].getTileType().equals(tileGrid[i-1][j].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i-2][j].getTileType()))
+                    {
+                        tileGrid[i-1][j] = null;
+                        tileGrid[i-2][j] = null;
+                        int count = 1;
+                        int m = i-2;
+                        while(count >= 0){
+                            for(int k = j-1;k>=0;k--){
+                                moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                                tileGrid[m][k] = null;
+                            }
+                            count--;
+                            m++;
+                        }
+                        return true;
+                    }
+            return false;
+    }
+    public boolean deleteSouthEastL(int i,int j){
+        //  %
+        //  %
+        //%%%
+        if(i >= 2 && tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+2].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i-2][j+2].getTileType()))
+                    {
+                        tileGrid[i-1][j+2] = null;
+                        tileGrid[i-2][j+2] = null;
+                        int count = 1;
+                        int m = i-2;
+                        while(count >= 0){
+                            for(int k = j+1;k >=0;k--){
+                                moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                                tileGrid[m][k] = null;
+                            }
+                            count--;
+                            m++;
+                        }
+                     return true;   
+                    }
+            return false;
+    }
+    public boolean deleteSouthWestL(int i,int j){
+        //%
+        //%
+        //%%%
+        if(i <= gridRows - 3 && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+2].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j+2].getTileType()))
+                    {
+                        tileGrid[i+1][j+2] = null;
+                        tileGrid[i+2][j+2] = null;
+                        int count = 1;
+                        int m = i+1;
+                        while(count >= 0){
+                            for(int k = j+1;k >= 0;k--){
+                                moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                                tileGrid[m][k] = null;
+                            }
+                            count--;
+                            m++;
+                        }
+                        return true;
+                    }
+                    return false;
+    }
+    public boolean deleteNorthWestL(int i,int j){
+        //%%%
+        //%
+        //%
+        if(i <= gridRows - 3 && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j].getTileType()))
+                    {
+                        tileGrid[i+1][j] = null;
+                        tileGrid[i+2][j] = null;
+                        int count = 1;
+                        int m = i+1;
+                        while(count >= 0){
+                            for(int k = j-1;k >= 0;k--){
+                                moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                                tileGrid[m][k] = null;
+                            }
+                            count--;
+                            m++;
+                        }
+                        return true;
+                    }
+                    return false;
+    }
+    public boolean deleteFiveInRowHorizontal(int i,int j){
+        if(i < gridColumns - 4 && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j].getTileType()) 
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j].getTileType())
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i+3][j].getTileType())
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i+4][j].getTileType()))
+                {//IF 5 IN A ROW
+                    //DELETE THOSE TILES
+                    tileGrid[i][j] = null;
+                    tileGrid[i+1][j] = null;
+                    tileGrid[i+2][j] = null;
+                    tileGrid[i+3][j] = null;
+                    tileGrid[i+4][j] = null;
+                    //make tileGrid[i+2][j] a special power
+                    CrushSagaTile specialTile = createTypeFiveTile(calculateTileXInGrid(i+2),calculateTileYInGrid(j),0,0,VISIBLE_STATE);
+                    specialTile.setGridCell(i+2,j);
+                    tileGrid[i+2][j] = specialTile;
+                    //moveTileWithinGrid(t,i+2,j,TILE_GRID_VELOCITY);
+                    //REPLACE THEM WITH TILES ABOVE THEM IF ANY
+                    int count = 4;
+                    int m = i;
+                    while(count >= 0){
+                        for(int k=j-1;k >= 0 && m != (i + 2);k--)
+                        {
+                            moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                            tileGrid[m][k] = null;
+                        }
+                        count--;
+                        m++;
+                    }
+                        //FILL IN EMPTY CELLS
+                       fillEmptyCells();
+                       return true;
+                    }
+        return false;
+    }
+    public boolean deleteFiveInRowVertical(int i,int j){
+        if(j < gridRows - 4 && tileGrid[i][j].getTileType().equals(tileGrid[i][j+1].getTileType()) 
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i][j+2].getTileType())
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i][j+3].getTileType())
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i][j+4].getTileType()))
+        {
+            tileGrid[i][j] = null;
+                    tileGrid[i][j+1] = null;
+                    tileGrid[i][j+2] = null;
+                    tileGrid[i][j+3] = null;
+                    tileGrid[i][j+4] = null;
+                    //REPLACE THEM WITH TILES ABOVE THEM IF ANY
+                        for(int k=j-1;k >= 0;k--)
+                        {
+                            moveTileWithinGrid(tileGrid[i][k],i,k+5,TILE_GRID_VELOCITY);
+                            tileGrid[i][k] = null;
+                        }
+                        fillEmptyCells();
+             return true;
+        }
+        return false;   
+    }
+    public boolean deleteFourInRowHorizontal(int i,int j){
+        if(i < gridRows - 3 && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j].getTileType()) 
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j].getTileType())
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i+3][j].getTileType()))
+                {//4 IN A ROW
+                    tileGrid[i][j] = null;
+                    tileGrid[i+1][j] = null;
+                    tileGrid[i+2][j] = null;
+                    tileGrid[i+3][j] = null;
+                    int count = 3;
+                    int m = i;
+                    while(count >= 0){
+                        for(int k=j-1;k >= 0;k--)
+                        {
+                            moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                            tileGrid[m][k] = null;
+                        }
+                        count--;
+                        m++;
+                    }
+                    fillEmptyCells();
+                    return true;
+                }
+                return false;
+    }
+    public boolean deleteFourInRowVertical(int i,int j){
+        if(j < gridRows - 3 && tileGrid[i][j].getTileType().equals(tileGrid[i][j+1].getTileType()) 
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i][j+2].getTileType())
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i][j+3].getTileType()))
+                {//4 IN A ROW
+                    tileGrid[i][j] = null;
+                    tileGrid[i][j+1] = null;
+                    tileGrid[i][j+2] = null;
+                    tileGrid[i][j+3] = null;
+                    for(int k=j-1;k >= 0;k--)
+                        {
+                            moveTileWithinGrid(tileGrid[i][k],i,k+4,TILE_GRID_VELOCITY);
+                            tileGrid[i][k] = null;
+                        }
+                  fillEmptyCells();
+                  return true;
+                }
+            return false;
+    }
+    public boolean deleteThreeInRowHorizontal(int i,int j){
+        if(i < gridRows - 2 && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j].getTileType()) 
+                        && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j].getTileType()))
+                {//3 IN A ROW 
+                    tileGrid[i][j] = null;
+                    tileGrid[i+1][j] = null;
+                    tileGrid[i+2][j] = null;
+                    int count = 2;
+                    int m = i;
+                    while(count >= 0){
+                        for(int k=j-1;k >= 0;k--)
+                        {
+                            moveTileWithinGrid(tileGrid[m][k],m,k+1,TILE_GRID_VELOCITY);
+                            tileGrid[m][k] = null;
+                        }
+                        count--;
+                        m++;
+                    }
+                    fillEmptyCells();
+                    return true;
+                }
+                return false;
+    }
+    public void moveTile(CrushSagaTile tileToBeMoved,int x,int y,int velocity)
+    {
+        tileToBeMoved.setTarget(x, y);
+        tileToBeMoved.startMovingToTarget(velocity);
+        movingTiles.add(tileToBeMoved);   
+    }
+    public void moveTileWithinGrid(CrushSagaTile tileToBeMoved,int gridCol,int gridRow,int velocity)
+    {
+            tileToBeMoved.setTarget(calculateTileXInGrid(gridCol), calculateTileYInGrid(gridRow));
+            tileToBeMoved.startMovingToTarget(velocity);
+            movingTiles.add(tileToBeMoved);
+            tileToBeMoved.setGridCell(gridCol, gridRow);
+            tileGrid[gridCol][gridRow] = tileToBeMoved;
+    }
+    public int calculateGridCellColumn(int x)
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameWidth = Integer.parseInt(props.getProperty(CrushSaga.CrushSagaPropertyType.GAME_WIDTH.toString()));
+        int columnValue = gridColumns - ((int)(gameWidth - x))/TILE_IMAGE_WIDTH - 1;
+        return columnValue;
+    }
+    public int calculateGridCellRow(int y)
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameHeight = Integer.parseInt(props.getProperty(CrushSaga.CrushSagaPropertyType.GAME_HEIGHT.toString()));
+        int rowValue = gridRows - ((int)(gameHeight - y))/TILE_IMAGE_HEIGHT - 1;
+        return rowValue;
+    }
+    public int calculateTileXInGrid(int column)
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameWidth = Integer.parseInt(props.getProperty(CrushSaga.CrushSagaPropertyType.GAME_WIDTH.toString()));
+        int cellWidth = TILE_IMAGE_WIDTH;
+        return (int)(gameWidth - (cellWidth * (gridColumns -column)));
+    }
+    public int calculateTileYInGrid(int row)
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameHeight = Integer.parseInt(props.getProperty(CrushSaga.CrushSagaPropertyType.GAME_HEIGHT.toString()));
+        int cellHeight = TILE_IMAGE_HEIGHT;
+        return (int)(gameHeight - (cellHeight * (gridRows -row)));
+    }
+    public void fillEmptyCells()
+    {
+        for(int i = 0;i < gridColumns;i++){
+            for(int j = 0;j < gridRows;j++){
+                if(tileGrid[i][j] == null){
+                    CrushSagaTile newTile = generateRandomTile();
+                    moveTileWithinGrid(newTile,i,j,MAX_TILE_VELOCITY);
+                }
+            }
+        }
+    }
+    public CrushSagaTile generateRandomTile()
+    {
+        double rand = Math.random();
+            if(rand < 0.16){
+                return createTypeATile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else if(rand < 0.32){
+                return createTypeBTile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else if(rand < 0.48){
+                return createTypeCTile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else if(rand < 0.64){
+                return createTypeDTile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else if(rand < 0.8){
+                return createTypeETile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }else{
+                return createTypeFTile(unassignedTilesX,unassignedTilesY,0,0,VISIBLE_STATE);
+            }        
+    }
+    public CrushSagaTile createTypeATile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileASpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_A);
+        return newTile;
+    }
+    //GENERATES A TYPE B TILE
+    public CrushSagaTile createTypeBTile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileBSpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_B);
+        return newTile;
+    }
+    //GENERATES A TYPE C TILE
+    public CrushSagaTile createTypeCTile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileCSpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_C);
+        return newTile;
+    }
+    //GENERATES A TYPE D TILE
+    public CrushSagaTile createTypeDTile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileDSpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_D);
+        return newTile;
+    }
+    //GENERATES A TYPE E TILE
+    public CrushSagaTile createTypeETile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileESpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_E);
+        return newTile;
+    }
+    //GENERATES A TYPE F TILE
+    public CrushSagaTile createTypeFTile(float initX,float initY,float initVx,float initVy,String initState)
+    {
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileFSpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_F);
+        return newTile;
+    }
+    //GENERATE 4-IN-ROW HORIZONTAL SPECIAL
+    public CrushSagaTile createTypeFourHorizontalTile(float initX,float initY,float initVx,float initVy,String initState){
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileFourInRowHorizontalSpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_FOUR_HORIZONTAL);
+        return newTile;
+    }
+    //GENERATE 4-IN-ROW VERTICAL SPECIAL
+    public CrushSagaTile createTypeFourVerticalTile(float initX,float initY,float initVx,float initVy,String initState){
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileFourInRowHorizontalSpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_FOUR_VERTICAL);
+        return newTile;
+    }
+    //GENERATE 5-IN-ROW SPECIAL
+    public CrushSagaTile createTypeFiveTile(float initX,float initY,float initVx,float initVy,String initState){
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileFiveInRowSpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_FIVE);
+        return newTile;
+    }
+    //GENERATE LT SPECIAL
+    public CrushSagaTile createTypeLTTile(float initX,float initY,float initVx,float initVy,String initState){
+        CrushSagaTile newTile = new CrushSagaTile(data.getTileLTSpriteType(),initX,initY,initVx,initVy,initState,TILE_TYPE_LT);
+        return newTile;
+    }
+    public boolean movesRemaining()
+    {
+        for(int i = 0;i < gridColumns;i++){
+            for(int j = 0;j < gridRows;j++){
+                if(i < gridColumns - 2 && j < gridRows - 1)
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j+1].getTileType()))
+                        return true;
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j].getTileType()))
+                    {
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j+1].getTileType()))
+                    {//8
+                        return true;
+                    }
+                    
+                }
+                if(i < gridColumns - 3)//hor
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+2][j].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+3][j].getTileType()))
+                    {//2
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+3][j].getTileType()))
+                    {//7
+                        return true;
+                    }
+                }
+                if(j > 0 && i < gridColumns - 2)//hor
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j-1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j-1].getTileType()))//3
+                    {
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j-1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j].getTileType()))//5
+                    {
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j-1].getTileType()))//6
+                    {
+                        return true;
+                    }
+                }
+                if(i > 0 && j < gridRows - 2)//ver
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+2].getTileType()))//1
+                    {
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i][j+2].getTileType()))//5
+                    {
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+2].getTileType()))//8
+                    {
+                        return true;
+                    }
+                }
+                if(j < gridRows - 3)//ver
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i][j+3].getTileType()))//2
+                    {
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i][j+2].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i][j+3].getTileType()))//7
+                    {
+                        return true;
+                    }
+                }
+                if(i < gridColumns - 1 && j < gridRows - 2)//ver
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+2].getTileType()))//3
+                    {
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i][j+2].getTileType()))//4
+                    {
+                        return true;
+                    }
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+2].getTileType()))//6
+                    {
+                        return true;
+                    }
+                }
+                if(i < gridColumns - 2 && j < gridRows - 3)//L
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i][j+3].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+2].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j+2].getTileType()))//1
+                    {
+                        return true;
+                    }
+                }
+                if(i > 0 && i < gridColumns - 2 && j < gridRows - 2)//L
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+2].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+2].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+2][j+2].getTileType()))//2
+                    {
+                        return true;
+                    }
+                }
+                if(i > 0 && i < gridColumns - 1 && j < gridRows - 3)//T
+                {
+                    if(tileGrid[i][j].getTileType().equals(tileGrid[i-1][j+1].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i][j+2].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i][j+3].getTileType())
+                            && tileGrid[i][j].getTileType().equals(tileGrid[i+1][j+1].getTileType()))//1
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}

@@ -1,0 +1,109 @@
+import crush_saga.data.CrushSagaDataModel;
+import crush_saga.ui.CrushSagaPanel;
+import crush_saga_main.CrushSaga.CrushSagaPropertyType;
+import static crush_saga_main.CrushSagaConstants.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import mini_game.*;
+import properties_manager.PropertiesManager;
+
+
+import mini_game.MiniGame;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaMiniGame extends MiniGame{
+    private String currentScreenState;
+    
+    public void switchToSplashScreen()
+    {
+        //change background
+        guiDecor.get(BACKGROUND_TYPE).setState(SPLASH_SCREEN_STATE);
+        //activate play,reset,quit buttons
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        ArrayList<String> splashScreenButtons = props.getPropertyOptionsList(CrushSagaPropertyType.SPLASH_SCREEN_BUTTONS);
+        for(String splashButtons: splashScreenButtons)
+        {
+            guiButtons.get(splashButtons).setState(VISIBLE_STATE);
+            guiButtons.get(splashButtons).setEnabled(true);
+        }
+        currentScreenState = SPLASH_SCREEN_STATE;
+    }
+    
+    
+    public void initGUIControls()
+    {
+        BufferedImage img;
+        float x,y;
+        SpriteType sT;
+        Sprite s;
+        
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        String imgPath = props.getProperty(CrushSagaPropertyType.IMG_PATH);
+        //construct panel
+        canvas = new CrushSagaPanel(this,(CrushSagaDataModel)data);
+        //load backgrounds
+        currentScreenState = SPLASH_SCREEN_STATE;
+        img = loadImage(imgPath + props.getProperty(CrushSagaPropertyType.SPLASH_SCREEN_IMAGE_NAME));
+        sT = new SpriteType(BACKGROUND_TYPE);
+        sT.addState(SPLASH_SCREEN_STATE,img);
+        img = loadImage(imgPath + props.getProperty(CrushSagaPropertyType.SAGA_BACKGROUND_IMAGE_NAME));
+        sT.addState(SAGA_SCREEN_STATE,img);
+        img = loadImage(imgPath + props.getProperty(CrushSagaPropertyType.GAME_BACKGROUND_IMAGE_NAME));
+        sT.addState(GAME_SCREEN_STATE, img);
+        s = new Sprite(sT,0,0,0,0,SPLASH_SCREEN_STATE);
+        guiDecor.put(BACKGROUND_TYPE, s);
+        
+        //add options for splash screen state
+        ArrayList<String> splashButtons = props.getPropertyOptionsList(CrushSagaPropertyType.SPLASH_SCREEN_BUTTONS);
+        ArrayList<String> splashButtonsImageNames = props.getPropertyOptionsList(CrushSagaPropertyType.SPLASH_SCREEN_IMAGE_NAME);
+        ArrayList<String> splashButtonsMouseOverImageNames = props.getPropertyOptionsList(CrushSagaPropertyType.SPLASH_SCREEN_MOUSE_OVER_IMAGE_NAME);
+        float totalWidth = splashButtons.size() * (SPLASH_BUTTON_WIDTH);
+        float gameWidth = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_WIDTH));
+        x = (gameWidth - totalWidth)/2.0f;
+        y = SPLASH_BUTTON_Y;
+        for(int i = 0;i < splashButtons.size();i++)
+        {
+            sT = new SpriteType(SPLASH_BUTTON_TYPE);
+            img = loadImage(imgPath + splashButtonsImageNames.get(i));
+            sT.addState(VISIBLE_STATE,img);
+            img = loadImage(imgPath + splashButtonsMouseOverImageNames.get(i));
+            sT.addState(MOUSE_OVER_STATE,img);
+            s = new Sprite(sT,x,y,0,0,VISIBLE_STATE);
+            guiButtons.put(splashButtons.get(i),s);
+            x += SPLASH_BUTTON_WIDTH + SPLASH_BUTTON_MARGIN;
+        }
+        
+        
+        
+    }
+    public void initAudioContent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void initData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    
+
+    @Override
+    public void initGUIHandlers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateGUI() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+}

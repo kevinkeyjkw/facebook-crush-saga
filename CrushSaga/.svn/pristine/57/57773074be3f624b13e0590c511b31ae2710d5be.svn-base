@@ -1,0 +1,66 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.data;
+
+import crush_saga.ui.CrushSagaMiniGame;
+import static crush_saga_main.CrushSagaConstants.*;
+import crush_saga.ui.CrushSagaPanel;
+import mini_game.MiniGame;
+import mini_game.MiniGameDataModel;
+import mini_game.Sprite;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaDataModel extends MiniGameDataModel{
+    private CrushSagaMiniGame game;
+    private CrushSagaPanel sagaPanel;
+    
+    public CrushSagaDataModel(CrushSagaMiniGame initMiniGame)
+    {
+        game = initMiniGame;
+        sagaPanel = (CrushSagaPanel)game.getCanvas();
+    }
+    
+    public void scrollUp()
+    {
+        Sprite s = game.getGUIDecor().get(BACKGROUND_TYPE);
+        if(game.getCurrentScreenState().equals(SAGA_SCREEN_STATE) && s.getY() < 0)
+        {
+        float currentY = s.getY();
+        s.setY(currentY + 10);
+        }
+    }
+    public void scrollDown()
+    {
+        Sprite s = game.getGUIDecor().get(BACKGROUND_TYPE);
+        if(game.getCurrentScreenState().equals(SAGA_SCREEN_STATE) && s.getY() > SAGA_SCREEN_INITIAL_Y )
+        {
+        float currentY = game.getGUIDecor().get(BACKGROUND_TYPE).getY();
+        game.getGUIDecor().get(BACKGROUND_TYPE).setY(currentY - 10);
+        }
+    }
+    @Override
+    public void checkMousePressOnSprites(MiniGame game, int x, int y) {
+     
+    }
+
+    @Override
+    public void reset(MiniGame game) {
+     
+    }
+
+    @Override
+    public void updateAll(MiniGame game) {
+     
+    }
+
+    @Override
+    public void updateDebugText(MiniGame game) {
+     
+    }
+    
+}

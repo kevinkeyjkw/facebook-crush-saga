@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    The properties in this file are specific to the zombie crush saga flavor of the game.
+-->
+<properties>
+    <property_list>    
+        <property name="GAME_TITLE_TEXT"            value="Zombie Crush Saga"></property>
+        
+        
+        <!-- BIG, FULL VIEWPORT BACKGROUND SCREEN IMAGES -->
+        <property name="SPLASH_BACKGROUND_IMAGE_NAME"   value="./zombie_crush_saga/UIzombie_crush_sagaSplashBackground.png"></property>
+		<property name ="SAGA_BACKGROUND_IMAGE_NAME"    value="./zombie_crush_saga/UIzombie_crush_sagaSagaBackground.png"></property>
+        <property name="GAME_BACKGROUND_IMAGE_NAME"     value="./zombie_crush_saga/UIzombie_crush_sagaGameBackground.png"></property>
+        
+        
+        <!-- BASE TILE RENDERING IMAGES -->
+        <property name="BLANK_TILE_IMAGE_NAME"              value="./zombie_crush_saga/UIzombie_crush_sagaBlankTile.png"></property>
+        <property name="BLANK_TILE_SELECTED_IMAGE_NAME"     value="./zombie_crush_saga/UIzombie_crush_sagaBlankTileSelected.png"></property>
+        
+        
+    </property_list>
+    <property_options_list>
+        <property_options name="SPLASH_SCREEN_BUTTONS_IMAGE_NAMES">
+            <option>./zombie_crush_saga/PlayGameButton.png</option>
+            <option>./zombie_crush_saga/QuitGameButton.png</option>
+            <option>./zombie_crush_saga/ResetGameButton.png</option>
+        </property_options>
+        <property_options name="SPLASH_SCREEN_BUTTONS_MOUSE_OVER_IMAGE_NAMES">
+            <option>./zombie_crush_saga/PlayGameButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/QuitGameButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/ResetGameButtonMouseOver.png</option>
+        </property_options>
+        
+        <property_options name="SCROLL_BUTTONS_IMAGE_NAMES">
+            <option>./zombie_crush_saga/ScrollUpButton.png</option>
+            <option>./zombie_crush_saga/ScrollDownButton.png</option>
+        </property_options>
+        
+        <property_options name="SCROLL_BUTTONS_MOUSE_OVER_IMAGE_NAMES">
+            <option>./zombie_crush_saga/ScrollUpButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/ScrollDownButtonMouseOver.png</option>
+        </property_options>
+        <!-- THERE WILL BE FOUR OF EACH OF TEHSE AND
+            THESE CAN ONLY MATCH WITH THEMSELVES -->
+        <property_options name="TYPE_C_TILES">
+            <option>./zombie_crush_saga/TileZombieBackupDancer.png</option>
+            <option>./zombie_crush_saga/TileZombieBalloon.png</option>
+            <option>./zombie_crush_saga/TileZombieBaseball.png</option>
+            <option>./zombie_crush_saga/TileZombieBobsledTeam.png</option>
+            <option>./zombie_crush_saga/TileZombieBuckethead.png</option>
+            <option>./zombie_crush_saga/TileZombieBungee.png</option>
+            <option>./zombie_crush_saga/TileZombieCatapult.png</option>
+            <option>./zombie_crush_saga/TileZombieConehead.png</option>
+            <option>./zombie_crush_saga/TileZombieDancing.png</option>
+            <option>./zombie_crush_saga/TileZombieDigger.png</option>
+            <option>./zombie_crush_saga/TileZombieDolphinRider.png</option>
+            <option>./zombie_crush_saga/TileZombieDrZomboss.png</option>
+            <option>./zombie_crush_saga/TileZombieDuckyTube.png</option>
+            <option>./zombie_crush_saga/TileZombieFlag.png</option>
+            <option>./zombie_crush_saga/TileZombieFootball.png</option>
+            <option>./zombie_crush_saga/TileZombieGargantuar.png</option>
+            <option>./zombie_crush_saga/TileZombieGatlingPeaShooter.png</option>
+            <option>./zombie_crush_saga/TileZombieGigaFootball.png</option>
+            <option>./zombie_crush_saga/TileZombieGigaGargantuar.png</option>
+            <option>./zombie_crush_saga/TileZombieImp.png</option>
+            <option>./zombie_crush_saga/TileZombieJackInTheBox.png</option>
+            <option>./zombie_crush_saga/TileZombieJalapeno.png</option>
+            <option>./zombie_crush_saga/TileZombieLadder.png</option>
+            <option>./zombie_crush_saga/TileZombieNewspaper.png</option>
+            <option>./zombie_crush_saga/TileZombiePeashooter.png</option>
+            <option>./zombie_crush_saga/TileZombiePogo.png</option>
+            <option>./zombie_crush_saga/TileZombiePoleVaulting.png</option>
+            <option>./zombie_crush_saga/TileZombieScreenDoor.png</option>
+            <option>./zombie_crush_saga/TileZombieSnorkel.png</option>
+            <option>./zombie_crush_saga/TileZombieSquash.png</option>
+            <option>./zombie_crush_saga/TileZombieTarget.png</option>
+            <option>./zombie_crush_saga/TileZombieTrashCan.png</option>
+            <option>./zombie_crush_saga/TileZombieYeti.png</option>
+            <option>./zombie_crush_saga/TileZombieZomboni.png</option>
+        </property_options>
+    </property_options_list>
+</properties>

@@ -1,0 +1,24 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.ui;
+
+import crush_saga.data.CrushSagaDataModel;
+import javax.swing.JPanel;
+import mini_game.MiniGame;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaPanel extends JPanel{
+    private MiniGame game;
+    private CrushSagaDataModel data;
+    public CrushSagaPanel(MiniGame initGame, CrushSagaDataModel initData)
+    {
+        game = initGame;
+        data = initData;
+    }
+    
+}

@@ -1,0 +1,99 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.data;
+
+import crush_saga.ui.CrushSagaMiniGame;
+import static crush_saga_main.CrushSagaConstants.*;
+import crush_saga.ui.CrushSagaPanel;
+import crush_saga_main.CrushSaga.CrushSagaPropertyType;
+import java.util.ArrayList;
+import mini_game.MiniGame;
+import mini_game.MiniGameDataModel;
+import mini_game.Sprite;
+import properties_manager.PropertiesManager;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaDataModel extends MiniGameDataModel{
+    private CrushSagaMiniGame game;
+    private CrushSagaPanel sagaPanel;
+    private String test;
+    public CrushSagaDataModel(CrushSagaMiniGame initMiniGame)
+    {
+        game = initMiniGame;
+        sagaPanel = (CrushSagaPanel)game.getCanvas();
+    }
+    
+    public void scrollUp()
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Sprite s = game.getGUIDecor().get(BACKGROUND_TYPE);
+        if(game.getCurrentScreenState().equals(SAGA_SCREEN_STATE) && s.getY() < 0)
+        {
+        float currentY = s.getY();
+        s.setY(currentY + 10);
+        
+        ArrayList<String> levels = props.getPropertyOptionsList(CrushSagaPropertyType.LEVEL_OPTIONS);
+        for(String level: levels)
+            {
+            float levelY = game.getGUIButtons().get(level).getY();
+            game.getGUIButtons().get(level).setY(levelY + 10);
+            }
+        }
+    }
+    public void scrollDown()
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        Sprite s = game.getGUIDecor().get(BACKGROUND_TYPE);
+        if(game.getCurrentScreenState().equals(SAGA_SCREEN_STATE) && s.getY() > SAGA_SCREEN_INITIAL_Y )
+        {
+        float currentY = s.getY();
+        s.setY(currentY - 10);
+        
+        ArrayList<String> levels = props.getPropertyOptionsList(CrushSagaPropertyType.LEVEL_OPTIONS);
+        for(String level: levels)
+            {
+            float levelY = game.getGUIButtons().get(level).getY();
+            game.getGUIButtons().get(level).setY(levelY - 10);
+            }
+        
+        }
+    }
+    public void displayLevelDialog()
+    {
+        game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).setState(VISIBLE_STATE);
+    }
+    @Override
+    public void checkMousePressOnSprites(MiniGame game, int x, int y) {
+        test = game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).getState();
+        if(game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).getState().equals(VISIBLE_STATE))
+        {
+            game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).setState(INVISIBLE_STATE);
+            game.getGUIButtons().get(SAGA_PLAY_LEVEL_BUTTON_TYPE).setState(INVISIBLE_STATE);
+            game.getGUIButtons().get(SAGA_PLAY_LEVEL_BUTTON_TYPE).setEnabled(false);
+            return;
+        }
+        
+    }
+
+    @Override
+    public void reset(MiniGame game) {
+     
+        beginGame();
+    }
+
+    @Override
+    public void updateAll(MiniGame game) {
+     
+    }
+
+    @Override
+    public void updateDebugText(MiniGame game) {
+     
+    }
+    
+}

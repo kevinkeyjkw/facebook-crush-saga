@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    The properties in this file are specific to the zombie crush saga flavor of the game.
+-->
+<properties>
+    <property_list>    
+        <property name="GAME_TITLE_TEXT"            value="Zombie Crush Saga"></property>
+        
+        
+        <!-- BIG, FULL VIEWPORT BACKGROUND SCREEN IMAGES -->
+        <property name="SPLASH_BACKGROUND_IMAGE_NAME"   value="./zombie_crush_saga/UIzombie_crush_sagaSplashBackground.png"></property>
+		<property name ="SAGA_BACKGROUND_IMAGE_NAME"    value="./zombie_crush_saga/UIzombie_crush_sagaSagaBackground.png"></property>
+        <property name="GAME_BACKGROUND_IMAGE_NAME"     value="./zombie_crush_saga/UIzombie_crush_sagaGameBackground.png"></property>
+        
+        
+        
+        <property name="SAGA_QUIT_GAME_BUTTON_IMAGE_NAME"             			 value="./zombie_crush_saga/SagaQuitGameButton.png"></property>
+        <property name="SAGA_QUIT_GAME_MOUSE_OVER_BUTTON_IMAGE_NAME"   			 value="./zombie_crush_saga/SagaQuitGameButtonMouseOver.png"></property>
+        <property name="LEVEL_DIALOG_IMAGE_NAME"                     			 value="./zombie_crush_saga/UIzombie_crush_sagaLevelDialog.png"></property>
+		<property name="WIN_DIALOG_IMAGE_NAME"                     			     value="./zombie_crush_saga/UIzombie_crush_sagaWinDialog.png"></property>
+		<property name="LOSE_DIALOG_IMAGE_NAME"                     			 value="./zombie_crush_saga/UIzombie_crush_sagaLoseDialog.png"></property>
+		<property name="SAGA_PLAY_LEVEL_BUTTON_IMAGE_NAME"            			 value="./zombie_crush_saga/PlayLevelButton.png"></property>
+        <property name="SAGA_PLAY_LEVEL_MOUSE_OVER_BUTTON_IMAGE_NAME"  			 value="./zombie_crush_saga/PlayLevelButtonMouseOver.png"></property>
+		<property name="QUIT_LEVEL_BUTTON_IMAGE_NAME"             				 value="./zombie_crush_saga/QuitLevelButton.png"></property>
+        <property name="QUIT_LEVEL_BUTTON_MOUSE_OVER_IMAGE_NAME"  				 value="./zombie_crush_saga/QuitLevelButtonMouseOver.png"></property>
+		<property name="LEVEL_DIALOG_CLOSE_BUTTON_IMAGE_NAME"     				 value="./zombie_crush_saga/LevelDialogCloseButton.png"></property>
+		<property name="LEVEL_DIALOG_CLOSE_BUTTON_MOUSE_OVER_IMAGE_NAME"  		 value="./zombie_crush_saga/LevelDialogCloseButtonMouseOver.png"></property>
+		<property name="LEVEL_BUTTONS_IMAGE_NAMES"                  			 value="./zombie_crush_saga/LevelButton.png"></property>
+		<property name="LEVEL_BUTTONS_MOUSE_OVER_IMAGE_NAMES"       			 value="./zombie_crush_saga/LevelButtonMouseOver.png"></property>
+        <property name="TYPE_A_TILE_IMAGE_NAME"                      			 value="./zombie_crush_saga/TypeATile.png"></property>
+		<property name="TYPE_B_TILE_IMAGE_NAME"                       			 value="./zombie_crush_saga/TypeBTile.png"></property>
+		<property name="TYPE_C_TILE_IMAGE_NAME"                       			 value="./zombie_crush_saga/TypeCTile.png"></property>
+		<property name="TYPE_D_TILE_IMAGE_NAME"                       			 value="./zombie_crush_saga/TypeDTile.png"></property>
+		<property name="TYPE_E_TILE_IMAGE_NAME"                    				 value="./zombie_crush_saga/TypeETile.png"></property>
+		<property name="TYPE_F_TILE_IMAGE_NAME"                      			 value="./zombie_crush_saga/TypeFTile.png"></property>
+		
+		<property name="TYPE_FOUR_IN_ROW_HORIZONTAL_TILE_IMAGE_NAME"             value="./zombie_crush_saga/FourInRowHorizontalSpecial.png"></property>
+		<property name="TYPE_FOUR_IN_ROW_VERTICAL_TILE_IMAGE_NAME"               value="./zombie_crush_saga/FourInRowVerticalSpecial.png"></property>
+		<property name="TYPE_FIVE_IN_ROW_TILE_IMAGE_NAME"                      	 value="./zombie_crush_saga/FiveInRowSpecial.png"></property>
+		<property name="TYPE_LT_TILE_IMAGE_NAME"                      			 value="./zombie_crush_saga/LTSpecial.png"></property>
+		
+		<property name="TYPE_A_TILE_SELECTED_IMAGE_NAME"                      	 value="./zombie_crush_saga/TypeATileSelectedState.png"></property>
+		<property name="TYPE_B_TILE_SELECTED_IMAGE_NAME"                      	 value="./zombie_crush_saga/TypeBTileSelectedState.png"></property>
+		<property name="TYPE_C_TILE_SELECTED_IMAGE_NAME"                      	 value="./zombie_crush_saga/TypeCTileSelectedState.png"></property>
+		<property name="TYPE_D_TILE_SELECTED_IMAGE_NAME"                      	 value="./zombie_crush_saga/TypeDTileSelectedState.png"></property>
+		<property name="TYPE_E_TILE_SELECTED_IMAGE_NAME"                      	 value="./zombie_crush_saga/TypeETileSelectedState.png"></property>
+		<property name="TYPE_F_TILE_SELECTED_IMAGE_NAME"                      	 value="./zombie_crush_saga/TypeFTileSelectedState.png"></property>
+		
+		<property name="TYPE_FOUR_IN_ROW_HORIZONTAL_TILE_SELECTED_IMAGE_NAME"    value="./zombie_crush_saga/FourInRowHorizontalSpecialSelectedState.png"></property>
+		<property name="TYPE_FOUR_IN_ROW_VERTICAL_TILE_SELECTED_IMAGE_NAME"      value="./zombie_crush_saga/FourInRowVerticalSpecialSelectedState.png"></property>
+		<property name="TYPE_FIVE_IN_ROW_TILE_SELECTED_IMAGE_NAME"               value="./zombie_crush_saga/FiveInRowSpecialSelectedState.png"></property>
+		<property name="TYPE_LT_TILE_SELECTED_IMAGE_NAME"                      	 value="./zombie_crush_saga/LTSpecialSelectedState.png"></property>
+		
+		<property name="TIME_DISPLAY_IMAGE_NAME"                              	 value="./zombie_crush_saga/TimeDisplay.png"></property>
+		<property name="SCORE_DISPLAY_IMAGE_NAME"                             	 value="./zombie_crush_saga/ScoreDisplay.png"></property>
+		<property name="LEVEL_STAR_COMPLETED_IMAGE_NAME"                         value="./zombie_crush_saga/LevelStarCompleted.png"></property>
+		<property name="LEVEL_STAR_UNCOMPLETED_IMAGE_NAME"                             value="./zombie_crush_saga/LevelStarUncompleted.png"></property>
+		
+    </property_list>
+    <property_options_list>
+        <property_options name="SPLASH_SCREEN_BUTTONS_IMAGE_NAMES">
+            <option>./zombie_crush_saga/PlayGameButton.png</option>
+            <option>./zombie_crush_saga/QuitGameButton.png</option>
+            <option>./zombie_crush_saga/ResetGameButton.png</option>
+        </property_options>
+        <property_options name="SPLASH_SCREEN_BUTTONS_MOUSE_OVER_IMAGE_NAMES">
+            <option>./zombie_crush_saga/PlayGameButtonMouseOver.png</option>
+			<option>./zombie_crush_saga/QuitGameButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/ResetGameButtonMouseOver.png</option>
+        </property_options>
+        <property_options name="SCROLL_BUTTONS_IMAGE_NAMES">
+            <option>./zombie_crush_saga/ScrollUpButton.png</option>
+            <option>./zombie_crush_saga/ScrollDownButton.png</option>
+        </property_options>
+        <property_options name="SCROLL_BUTTONS_MOUSE_OVER_IMAGE_NAMES">
+            <option>./zombie_crush_saga/ScrollUpButtonMouseOver.png</option>
+            <option>./zombie_crush_saga/ScrollDownButtonMouseOver.png</option>
+        </property_options>
+		<property_options name="LEVEL_OPTIONS">
+            <option>./zombie_crush_saga/LevelOne.txt</option>
+            <option>./zombie_crush_saga/LevelTwo.txt</option>
+            <option>./zombie_crush_saga/LevelThree.txt</option>
+            <option>./zombie_crush_saga/LevelFour.txt</option>
+			<option>./zombie_crush_saga/LevelFive.txt</option>
+			<option>./zombie_crush_saga/LevelSix.txt</option>
+			<option>./zombie_crush_saga/LevelSeven.txt</option>
+			<option>./zombie_crush_saga/LevelEight.txt</option>
+			<option>./zombie_crush_saga/LevelNine.txt</option>
+			<option>./zombie_crush_saga/LevelTen.txt</option>
+			<option>./zombie_crush_saga/LevelOneTen.txt</option>
+            <option>./zombie_crush_saga/LevelTwoTen.txt</option>
+            <option>./zombie_crush_saga/LevelThreeTen.txt</option>
+            <option>./zombie_crush_saga/LevelFourTen.txt</option>
+			<option>./zombie_crush_saga/LevelFiveTen.txt</option>
+			<option>./zombie_crush_saga/LevelSixTen.txt</option>
+			<option>./zombie_crush_saga/LevelSevenTen.txt</option>
+			<option>./zombie_crush_saga/LevelEightTen.txt</option>
+			<option>./zombie_crush_saga/LevelNineTen.txt</option>
+			<option>./zombie_crush_saga/LevelTenTen.txt</option>
+			<option>./zombie_crush_saga/LevelOneTwenty.txt</option>
+            <option>./zombie_crush_saga/LevelTwoTwenty.txt</option>
+            <option>./zombie_crush_saga/LevelThreeTwenty.txt</option>
+            <option>./zombie_crush_saga/LevelFourTwenty.txt</option>
+			<option>./zombie_crush_saga/LevelFiveTwenty.txt</option>
+			<option>./zombie_crush_saga/LevelSixTwenty.txt</option>
+			<option>./zombie_crush_saga/LevelSevenTwenty.txt</option>
+			<option>./zombie_crush_saga/LevelEightTwenty.txt</option>
+			<option>./zombie_crush_saga/LevelNineTwenty.txt</option>
+			<option>./zombie_crush_saga/LevelTenTwenty.txt</option>
+			<option>./zombie_crush_saga/LevelOneThirty.txt</option>
+            <option>./zombie_crush_saga/LevelTwoThirty.txt</option>
+            <option>./zombie_crush_saga/LevelThreeThirty.txt</option>
+            <option>./zombie_crush_saga/LevelFourThirty.txt</option>
+			<option>./zombie_crush_saga/LevelFiveThirty.txt</option>
+			<option>./zombie_crush_saga/LevelSixThirty.txt</option>
+			<option>./zombie_crush_saga/LevelSevenThirty.txt</option>
+			<option>./zombie_crush_saga/LevelEightThirty.txt</option>
+			<option>./zombie_crush_saga/LevelNineThirty.txt</option>
+			<option>./zombie_crush_saga/LevelTenThirty.txt</option>
+			<option>./zombie_crush_saga/LevelOneForty.txt</option>
+            <option>./zombie_crush_saga/LevelTwoForty.txt</option>
+            <option>./zombie_crush_saga/LevelThreeForty.txt</option>
+            <option>./zombie_crush_saga/LevelFourForty.txt</option>
+			<option>./zombie_crush_saga/LevelFiveForty.txt</option>
+			<option>./zombie_crush_saga/LevelSixForty.txt</option>
+			<option>./zombie_crush_saga/LevelSevenForty.txt</option>
+			<option>./zombie_crush_saga/LevelEightForty.txt</option>
+			<option>./zombie_crush_saga/LevelNineForty.txt</option>
+			<option>./zombie_crush_saga/LevelTenForty.txt</option>
+			<option>./zombie_crush_saga/LevelOneFifty.txt</option>
+            <option>./zombie_crush_saga/LevelTwoFifty.txt</option>
+            <option>./zombie_crush_saga/LevelThreeFifty.txt</option>
+            <option>./zombie_crush_saga/LevelFourFifty.txt</option>
+			<option>./zombie_crush_saga/LevelFiveFifty.txt</option>
+			<option>./zombie_crush_saga/LevelSixFifty.txt</option>
+			<option>./zombie_crush_saga/LevelSevenFifty.txt</option>
+			<option>./zombie_crush_saga/LevelEightFifty.txt</option>
+			<option>./zombie_crush_saga/LevelNineFifty.txt</option>
+			<option>./zombie_crush_saga/LevelTenFifty.txt</option>
+			<option>./zombie_crush_saga/LevelOneSixty.txt</option>
+            <option>./zombie_crush_saga/LevelTwoSixty.txt</option>
+            <option>./zombie_crush_saga/LevelThreeSixty.txt</option>
+            <option>./zombie_crush_saga/LevelFourSixty.txt</option>
+			<option>./zombie_crush_saga/LevelFiveSixty.txt</option>
+			<option>./zombie_crush_saga/LevelSixSixty.txt</option>
+			<option>./zombie_crush_saga/LevelSevenSixty.txt</option>
+			<option>./zombie_crush_saga/LevelEightSixty.txt</option>
+			<option>./zombie_crush_saga/LevelNineSixty.txt</option>
+			<option>./zombie_crush_saga/LevelTenSixty.txt</option>
+			<option>./zombie_crush_saga/LevelOneSeventy.txt</option>
+            <option>./zombie_crush_saga/LevelTwoSeventy.txt</option>
+            <option>./zombie_crush_saga/LevelThreeSeventy.txt</option>
+            <option>./zombie_crush_saga/LevelFourSeventy.txt</option>
+			<option>./zombie_crush_saga/LevelFiveSeventy.txt</option>
+			<option>./zombie_crush_saga/LevelSixSeventy.txt</option>
+			<option>./zombie_crush_saga/LevelSevenSeventy.txt</option>
+			<option>./zombie_crush_saga/LevelEightSeventy.txt</option>
+			<option>./zombie_crush_saga/LevelNineSeventy.txt</option>
+			<option>./zombie_crush_saga/LevelTenSeventy.txt</option>
+			<option>./zombie_crush_saga/LevelOneEighty.txt</option>
+            <option>./zombie_crush_saga/LevelTwoEighty.txt</option>
+            <option>./zombie_crush_saga/LevelThreeEighty.txt</option>
+            <option>./zombie_crush_saga/LevelFourEighty.txt</option>
+			<option>./zombie_crush_saga/LevelFiveEighty.txt</option>
+			<option>./zombie_crush_saga/LevelSixEighty.txt</option>
+			<option>./zombie_crush_saga/LevelSevenEighty.txt</option>
+			<option>./zombie_crush_saga/LevelEightEighty.txt</option>
+			<option>./zombie_crush_saga/LevelNineEighty.txt</option>
+			<option>./zombie_crush_saga/LevelTenEighty.txt</option>
+			<option>./zombie_crush_saga/LevelOneNinety.txt</option>
+            <option>./zombie_crush_saga/LevelTwoNinety.txt</option>
+            <option>./zombie_crush_saga/LevelThreeNinety.txt</option>
+            <option>./zombie_crush_saga/LevelFourNinety.txt</option>
+			<option>./zombie_crush_saga/LevelFiveNinety.txt</option>
+			<option>./zombie_crush_saga/LevelSixNinety.txt</option>
+			<option>./zombie_crush_saga/LevelSevenNinety.txt</option>
+			<option>./zombie_crush_saga/LevelEightNinety.txt</option>
+			<option>./zombie_crush_saga/LevelNineNinety.txt</option>
+			<option>./zombie_crush_saga/LevelTenNinety.txt</option>
+        </property_options>
+        <property_options name="LEVEL_DESCRIPTIONS">
+            <option>This is a ridiculously easy level./n Your objective is to achieve a score of/n at least 100 to pass. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this /nlevel.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players /nonly!</option>
+            <option>This is the level Einstein failed to /ncomplete!</option>
+            <option>If you complete this level, you should be/n using your skills elsewhere.</option>
+            <option>You could work on this level all day and/n you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should/n be using your skills elsewhere.</option>
+            <option>You could work on this level all day and/n you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should be using your skills elsewhere.</option>
+            <option>You could work on this level all day and you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should be using your skills elsewhere.</option>
+            <option>You could work on this level all day and you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should be using your skills elsewhere.</option>
+            <option>You could work on this level all day and you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should be using your skills elsewhere.</option>
+            <option>You could work on this level all day and you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should be using your skills elsewhere.</option>
+            <option>You could work on this level all day and you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should be using your skills elsewhere.</option>
+            <option>You could work on this level all day and you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should be using your skills elsewhere.</option>
+            <option>You could work on this level all day and you still won't complete it!</option>
+			<option>This is a ridiculously easy level. </option>
+            <option>This level is still ridiculously easy!</option>
+            <option>This level starts to get harder.</option>
+            <option>Level four is where the fun begins!</option>
+            <option>You might have some trouble with this level.</option>
+            <option>This is for experienced players only!</option>
+            <option>No more fun and games, skilled players only!</option>
+            <option>This is the level Einstein failed to complete!</option>
+            <option>If you complete this level, you should be using your skills elsewhere.</option>
+            <option>You could work on this level all day and you still won't complete it!</option>
+        </property_options>
+		
+    </property_options_list>
+</properties>

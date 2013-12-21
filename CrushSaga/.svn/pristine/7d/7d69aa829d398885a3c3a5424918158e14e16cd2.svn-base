@@ -1,0 +1,35 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga_main;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaConstants {
+
+    public static final String SPLASH_SCREEN_STATE = "SPLASH_SCREEN_STATE";
+    public static final String SAGA_SCREEN_STATE = "SAGA_SCREEN_STATE";
+    public static final String GAME_SCREEN_STATE = "GAME_SCREEN_STATE";
+    public static final String BACKGROUND_TYPE = "BACKGROUND_TYPE";
+    
+    public static final int SAGA_SCREEN_INITIAL_Y = -860;
+    public static final String INVISIBLE_STATE = "INVISIBLE_STATE";
+    public static final String VISIBLE_STATE = "VISIBLE_STATE";
+    public static final String MOUSE_OVER_STATE = "MOUSE_OVER_STATE";
+    
+    public static final int SPLASH_BUTTON_WIDTH = 200;
+    public static final int SPLASH_BUTTON_Y = 450;
+    public static final int SPLASH_BUTTON_MARGIN = 5;
+    public static final String SPLASH_BUTTON_TYPE = "SPLASH_BUTTON_TYPE";
+    public static final int SCROLL_BUTTON_MARGIN = 20; 
+    
+    public static final String PLAY_GAME_BUTTON_TYPE = "PLAY_GAME_BUTTON_TYPE";
+    public static final String RESET_GAME_BUTTON_TYPE = "RESET_GAME_BUTTON_TYPE";
+    public static final String QUIT_GAME_BUTTON_TYPE = "QUIT_GAME_BUTTON_TYPE";
+    public static final String SCROLL_UP_BUTTON_TYPE = "SCROLL_UP_BUTTON_TYPE";
+    public static final String SCROLL_DOWN_BUTTON_TYPE = "SCROLL_DOWN_BUTTON_TYPE";
+    
+}

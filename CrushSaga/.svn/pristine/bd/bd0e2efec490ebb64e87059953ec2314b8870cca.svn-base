@@ -1,0 +1,226 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.ui;
+
+import crush_saga.data.CrushSagaDataModel;
+import crush_saga_main.CrushSaga;
+import crush_saga_main.CrushSaga.CrushSagaPropertyType;
+import static crush_saga_main.CrushSagaConstants.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import javax.swing.JPanel;
+import mini_game.MiniGame;
+import mini_game.Sprite;
+import mini_game.SpriteType;
+import properties_manager.PropertiesManager;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaPanel extends JPanel{
+    private MiniGame game;
+    private CrushSagaDataModel data;
+    private Font statsFont = new Font("Arial",Font.BOLD,15);
+    private BufferedImage img;
+    
+    Toolkit tk = Toolkit.getDefaultToolkit();
+    public CrushSagaPanel(MiniGame initGame, CrushSagaDataModel initData)
+    {
+        game = initGame;
+        data = initData;
+        
+    }
+    
+    public void paintComponent(Graphics g)
+    {
+        try
+        {
+            game.beginUsingData();
+            super.paintComponent(g);
+            
+            //this.setCursor(null);
+            //********************
+            if(data.getMallet()){
+                PropertiesManager props = PropertiesManager.getPropertiesManager();
+                String imgPath = props.getProperty(CrushSagaPropertyType.IMG_PATH);
+                img = game.loadImage(imgPath + props.getProperty(CrushSagaPropertyType.MALLET_IMAGE_NAME));
+                Cursor c = tk.createCustomCursor(img, new Point(this.getX(),this.getY()), MALLET_CURSOR);
+                this.setCursor(c);
+            }else{
+                this.setCursor(null);
+            }
+            //********************
+            renderBackground(g);
+            renderGUIControls(g);
+            renderDialogs(g);
+            if(data.inProgress())
+            {
+            renderTiles(g);
+            }
+            renderStats(g);
+        }finally
+        {
+            game.endUsingData();
+        }
+    }
+
+    private void renderBackground(Graphics g) {
+        Sprite bg = game.getGUIDecor().get(BACKGROUND_TYPE);
+        renderSprite(g,bg);
+    }
+
+    private void renderGUIControls(Graphics g) {
+        Collection<Sprite> decorSprites = game.getGUIDecor().values();
+        for(Sprite s: decorSprites)
+        {
+            renderSprite(g,s);
+        }
+        Collection<Sprite> buttonSprites = game.getGUIButtons().values();
+        for(Sprite s: buttonSprites)
+        {
+            renderSprite(g,s);
+        }
+    }
+
+    private void renderSprite(Graphics g, Sprite s) {
+        
+        if(!s.getState().equals(INVISIBLE_STATE))
+        {
+            SpriteType bgST = s.getSpriteType();
+            Image img = bgST.getStateImage(s.getState());
+            //change x and y coordinate of sprite when saga state to scroll up and down
+            g.drawImage(img, (int)s.getX(),(int)s.getY(), null);
+            
+        }
+    
+    }
+    private void renderTiles(Graphics g)
+    {
+        /*
+        ArrayList<CrushSagaTile> tiles = data.getStackTiles();
+        for(CrushSagaTile tileToRender: tiles)
+        {
+            renderTile(g,tileToRender);
+        }
+        * */
+        CrushSagaTile[][]tileGrid = data.getTileGrid();
+        for(CrushSagaTile tileArray[]:tileGrid){
+            for(CrushSagaTile tile: tileArray){
+                renderTile(g,tile);
+            }
+        }
+        CrushSagaTile[][] jellyGrid = data.getJellyGrid();
+        for(CrushSagaTile tileArray[]:jellyGrid){
+            for(CrushSagaTile tile: tileArray){
+                renderTile(g,tile);
+            }
+        }
+        Iterator<CrushSagaTile> movingTiles = data.getMovingTiles();
+        while(movingTiles.hasNext())
+        {
+            CrushSagaTile tile = movingTiles.next();
+            renderTile(g,tile);
+        }
+        
+        
+    }
+    private void renderTile(Graphics g,CrushSagaTile tileToRender)
+    {
+        if(tileToRender != null)
+        if(!tileToRender.getState().equals(INVISIBLE_STATE)){
+            renderSprite(g,tileToRender);
+        }
+        
+    }
+    public void renderDialogs(Graphics g)
+    {
+        Collection<Sprite> dialogSprites = game.getGUIDialogs().values();
+        for(Sprite s: dialogSprites)
+        {
+            renderSprite(g,s);
+        }
+        if(game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).getState().equals(VISIBLE_STATE))
+        {
+            renderSprite(g,game.getGUIButtons().get(SAGA_PLAY_LEVEL_BUTTON_TYPE));
+            renderSprite(g,game.getGUIButtons().get(LEVEL_DIALOG_CLOSE_BUTTON_TYPE));
+            renderSprite(g,game.getGUIDecor().get(STAR_ONE_TYPE));
+            renderSprite(g,game.getGUIDecor().get(STAR_TWO_TYPE));
+            renderSprite(g,game.getGUIDecor().get(STAR_THREE_TYPE));
+        }
+        if(game.getGUIDialogs().get(WIN_DIALOG_TYPE).getState().equals(VISIBLE_STATE))
+        {
+            renderSprite(g,game.getGUIDecor().get(STAR_ONE_TYPE));
+            renderSprite(g,game.getGUIDecor().get(STAR_TWO_TYPE));
+            renderSprite(g,game.getGUIDecor().get(STAR_THREE_TYPE));
+            Font f = new Font("Arial",Font.BOLD,40);
+            String gameScore = String.valueOf(data.getGameScore());
+            g.setFont(f);
+            g.drawString(gameScore,SCORE_X,SCORE_Y);
+            String moveTitle = "Moves:";
+            String movesRemaining = String.valueOf(data.getMovesRemaining());
+            g.drawString(moveTitle, SCORE_X, SCORE_Y + g.getFontMetrics().getHeight() );
+            g.drawString(movesRemaining, SCORE_X,SCORE_Y + 2*g.getFontMetrics().getHeight());
+        }
+        if(game.getGUIDialogs().get(LOSE_DIALOG_TYPE).getState().equals(VISIBLE_STATE))
+        {
+            renderSprite(g,game.getGUIButtons().get(TRY_AGAIN_BUTTON_TYPE));
+        }
+        
+        
+    }
+    public void renderStats(Graphics g)
+    {
+        if(((CrushSagaMiniGame)game).isCurrentScreenState(SAGA_SCREEN_STATE) && ((CrushSagaMiniGame)game).getGUIDialogs().get(LEVEL_DIALOG_TYPE).getState().equals(VISIBLE_STATE))
+        {
+            g.setFont(statsFont);
+            g.setColor(Color.BLACK);
+            String levelDescription = ((CrushSagaMiniGame)game).getCurrentLevelDescription();
+            String highScore = String.valueOf(((CrushSagaMiniGame)game).getPlayerRecord().getHighScore(data.getCurrentLevel()));
+            String scoreRequired = "Score Required:" + String.valueOf(data.getScoreRequired());
+            int count = 0;
+            for(String line: levelDescription.split("/n")){
+                g.drawString(line, LEVEL_DIALOG_DESCRIPTION_X, LEVEL_DIALOG_DESCRIPTION_Y + (count * g.getFontMetrics().getHeight()));
+                count++;
+            }
+            g.drawString(scoreRequired, LEVEL_DIALOG_DESCRIPTION_X, LEVEL_DIALOG_DESCRIPTION_Y + (count * g.getFontMetrics().getHeight()));
+            
+            Font f = new Font("Arial",Font.BOLD,40);
+            g.setFont(f);
+            g.drawString(highScore, LEVEL_DIALOG_SCORE_X, LEVEL_DIALOG_SCORE_Y);
+        }
+        
+     if (((CrushSagaMiniGame)game).isCurrentScreenState(GAME_SCREEN_STATE) 
+                && data.inProgress() || data.isPaused())
+        {
+            // RENDER THE TIME
+            String time = data.gameTimeToText();
+            Font f = new Font("Arial",Font.BOLD,40);
+            g.setColor(Color.BLACK);
+            g.setFont(f);
+            g.drawString(time, TIME_X, TIME_Y);
+            //RENDER SCORE
+            String gameScore = String.valueOf(data.getGameScore());
+            g.setFont(f);
+            g.drawString(gameScore,SCORE_X,SCORE_Y);
+            //RENDER MOVES REMAINING
+            String moveTitle = "Moves:";
+            String movesRemaining = String.valueOf(data.getMovesRemaining());
+            g.drawString(moveTitle, SCORE_X, SCORE_Y + g.getFontMetrics().getHeight() );
+            g.drawString(movesRemaining, SCORE_X,SCORE_Y + 2*g.getFontMetrics().getHeight());
+            
+        }       
+    }
+    
+}

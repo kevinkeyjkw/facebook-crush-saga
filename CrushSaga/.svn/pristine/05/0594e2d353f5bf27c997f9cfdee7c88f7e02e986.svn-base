@@ -1,0 +1,101 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.ui;
+
+import crush_saga.data.CrushSagaDataModel;
+import static crush_saga_main.CrushSagaConstants.*;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.util.Collection;
+import javax.swing.JPanel;
+import mini_game.MiniGame;
+import mini_game.Sprite;
+import mini_game.SpriteType;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaPanel extends JPanel{
+    private MiniGame game;
+    private CrushSagaDataModel data;
+    public CrushSagaPanel(MiniGame initGame, CrushSagaDataModel initData)
+    {
+        game = initGame;
+        data = initData;
+    }
+    
+    public void paintComponent(Graphics g)
+    {
+        try
+        {
+            game.beginUsingData();
+            super.paintComponent(g);
+            
+            renderBackground(g);
+            renderGUIControls(g);
+            renderDialogs(g);
+            renderStats(g);
+        }finally
+        {
+            game.endUsingData();
+        }
+    }
+
+    private void renderBackground(Graphics g) {
+        Sprite bg = game.getGUIDecor().get(BACKGROUND_TYPE);
+        renderSprite(g,bg);
+    }
+
+    private void renderGUIControls(Graphics g) {
+        Collection<Sprite> decorSprites = game.getGUIDecor().values();
+        for(Sprite s: decorSprites)
+        {
+            renderSprite(g,s);
+        }
+        Collection<Sprite> buttonSprites = game.getGUIButtons().values();
+        for(Sprite s: buttonSprites)
+        {
+            renderSprite(g,s);
+        }
+    }
+
+    private void renderSprite(Graphics g, Sprite s) {
+        
+        if(!s.getState().equals(INVISIBLE_STATE))
+        {
+            SpriteType bgST = s.getSpriteType();
+            Image img = bgST.getStateImage(s.getState());
+            //change x and y coordinate of sprite when saga state to scroll up and down
+            g.drawImage(img, (int)s.getX(),(int)s.getY(), null);
+            
+        }
+    
+    }
+    public void renderDialogs(Graphics g)
+    {
+        Collection<Sprite> dialogSprites = game.getGUIDialogs().values();
+        for(Sprite s: dialogSprites)
+        {
+            renderSprite(g,s);
+        }
+        if(game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).getState().equals(VISIBLE_STATE))
+        {
+            renderSprite(g,game.getGUIButtons().get(SAGA_PLAY_LEVEL_BUTTON_TYPE));
+        }
+        
+        
+    }
+    public void renderStats(Graphics g)
+    {
+        if(((CrushSagaMiniGame)game).isCurrentScreenState(SAGA_SCREEN_STATE) && ((CrushSagaMiniGame)game).getGUIDialogs().get(LEVEL_DIALOG_TYPE).getState().equals(VISIBLE_STATE))
+        {
+            String levelDescription = ((CrushSagaMiniGame)game).getCurrentLevelDescription();
+            g.drawString(levelDescription, LEVEL_DIALOG_DESCRIPTION_X, LEVEL_DIALOG_DESCRIPTION_Y);
+        }
+        
+        
+    }
+}

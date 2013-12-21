@@ -1,0 +1,41 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package crush_saga.events;
+
+import crush_saga.data.CrushSagaDataModel;
+import crush_saga.file.CrushSagaFileManager;
+import crush_saga.ui.CrushSagaMiniGame;
+import static crush_saga_main.CrushSagaConstants.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
+ *
+ * @author Kevin
+ */
+public class PlayLevelHandler implements ActionListener{
+    private CrushSagaMiniGame game;
+    private String levelFile;
+    private String test;
+    public PlayLevelHandler(CrushSagaMiniGame miniGame,String initLevelFile)
+    {
+        game = miniGame;
+        levelFile = initLevelFile;
+    }
+    public void actionPerformed(ActionEvent ae)
+    {
+        if(game.isCurrentScreenState(SAGA_SCREEN_STATE))
+        {
+            CrushSagaDataModel data = (CrushSagaDataModel)game.getDataModel();
+            CrushSagaFileManager fileManager = game.getFileManager();
+            //load level etc
+            //...
+            data.displayLevelDialog();
+            test = game.getGUIDialogs().get(LEVEL_DIALOG_TYPE).getState();
+            game.setCurrentLevelDescription(levelFile);
+        }
+    }
+    
+}

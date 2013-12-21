@@ -1,0 +1,210 @@
+package crush_saga.ui;
+
+import crush_saga.data.CrushSagaDataModel;
+import crush_saga.events.PlayGameHandler;
+import crush_saga_main.CrushSaga.CrushSagaPropertyType;
+import static crush_saga_main.CrushSagaConstants.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
+import mini_game.*;
+import properties_manager.PropertiesManager;
+
+
+import mini_game.MiniGame;
+
+/**
+ *
+ * @author Kevin
+ */
+public class CrushSagaMiniGame extends MiniGame{
+    private String currentScreenState;
+    
+    
+    
+    public void switchToSplashScreen()
+    {
+        //change background
+        guiDecor.get(BACKGROUND_TYPE).setState(SPLASH_SCREEN_STATE);
+        //activate play,reset,quit buttons
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        ArrayList<String> splashScreenButtons = props.getPropertyOptionsList(CrushSagaPropertyType.SPLASH_SCREEN_BUTTONS_IMAGE_NAMES);
+        for(String splashButtons: splashScreenButtons)
+        {
+            guiButtons.get(splashButtons).setState(VISIBLE_STATE);
+            guiButtons.get(splashButtons).setEnabled(true);
+        }
+        
+        //deactivate scroll buttons
+        guiButtons.get(SCROLL_UP_BUTTON_TYPE).setState(INVISIBLE_STATE);
+        guiButtons.get(SCROLL_DOWN_BUTTON_TYPE).setState(INVISIBLE_STATE);
+        
+        currentScreenState = SPLASH_SCREEN_STATE;
+        
+        
+    }
+    
+    public void switchToSagaScreen()
+    {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        guiDecor.get(BACKGROUND_TYPE).setState(SAGA_SCREEN_STATE);
+        currentScreenState = SAGA_SCREEN_STATE;
+        //deactivate splash screen buttons
+        
+        guiButtons.get(PLAY_GAME_BUTTON_TYPE).setState(INVISIBLE_STATE);
+        guiButtons.get(PLAY_GAME_BUTTON_TYPE).setEnabled(false);
+        guiButtons.get(RESET_GAME_BUTTON_TYPE).setState(INVISIBLE_STATE);
+        guiButtons.get(RESET_GAME_BUTTON_TYPE).setEnabled(false);
+        guiButtons.get(QUIT_GAME_BUTTON_TYPE).setState(INVISIBLE_STATE);
+        guiButtons.get(QUIT_GAME_BUTTON_TYPE).setEnabled(false);
+        //activate scroll buttons
+        guiButtons.get(SCROLL_UP_BUTTON_TYPE).setState(VISIBLE_STATE);
+        guiButtons.get(SCROLL_UP_BUTTON_TYPE).setEnabled(true);
+        guiButtons.get(SCROLL_DOWN_BUTTON_TYPE).setState(VISIBLE_STATE);
+        guiButtons.get(SCROLL_DOWN_BUTTON_TYPE).setEnabled(true);
+        
+    }
+    
+    public void initGUIControls()
+    {
+        BufferedImage img;
+        float x,y;
+        SpriteType sT;
+        Sprite s;
+        
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        String imgPath = props.getProperty(CrushSagaPropertyType.IMG_PATH);
+        //construct panel
+        canvas = new CrushSagaPanel(this,(CrushSagaDataModel)data);
+        //load backgrounds
+        currentScreenState = SPLASH_SCREEN_STATE;
+        img = loadImage(imgPath + props.getProperty(CrushSagaPropertyType.SPLASH_BACKGROUND_IMAGE_NAME));
+        sT = new SpriteType(BACKGROUND_TYPE);
+        sT.addState(SPLASH_SCREEN_STATE,img);
+        img = loadImage(imgPath + props.getProperty(CrushSagaPropertyType.SAGA_BACKGROUND_IMAGE_NAME));
+        sT.addState(SAGA_SCREEN_STATE,img);
+        img = loadImage(imgPath + props.getProperty(CrushSagaPropertyType.GAME_BACKGROUND_IMAGE_NAME));
+        sT.addState(GAME_SCREEN_STATE, img);
+        
+        s = new Sprite(sT,0,0,0,0,SPLASH_SCREEN_STATE);
+        guiDecor.put(BACKGROUND_TYPE, s);
+       
+        //add options for splash screen state
+        ArrayList<String> splashButtonsImageNames = props.getPropertyOptionsList(CrushSagaPropertyType.SPLASH_SCREEN_BUTTONS_IMAGE_NAMES);
+        ArrayList<String> splashButtonsMouseOverImageNames = props.getPropertyOptionsList(CrushSagaPropertyType.SPLASH_SCREEN_BUTTONS_MOUSE_OVER_IMAGE_NAMES);
+        float totalWidth = splashButtonsImageNames.size() * (SPLASH_BUTTON_WIDTH + SPLASH_BUTTON_MARGIN);
+        float totalHeight = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_HEIGHT));
+        float gameWidth = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_WIDTH));
+        x = (gameWidth - totalWidth)/2.0f;
+        y = SPLASH_BUTTON_Y;
+            //initiate play game button
+            sT = new SpriteType(PLAY_GAME_BUTTON_TYPE);
+            img = loadImage(imgPath + splashButtonsImageNames.get(0));
+            sT.addState(VISIBLE_STATE,img);
+            img = loadImage(imgPath + splashButtonsMouseOverImageNames.get(0));
+            sT.addState(MOUSE_OVER_STATE,img);
+            s = new Sprite(sT,x,y,0,0,VISIBLE_STATE);
+            guiButtons.put(PLAY_GAME_BUTTON_TYPE,s);
+            x += SPLASH_BUTTON_WIDTH + SPLASH_BUTTON_MARGIN;
+            //initiate reset game button
+            sT = new SpriteType(RESET_GAME_BUTTON_TYPE);
+            img = loadImage(imgPath + splashButtonsImageNames.get(1));
+            sT.addState(VISIBLE_STATE,img);
+            img = loadImage(imgPath + splashButtonsMouseOverImageNames.get(1));
+            sT.addState(MOUSE_OVER_STATE,img);
+            s = new Sprite(sT,x,y,0,0,VISIBLE_STATE);
+            guiButtons.put(RESET_GAME_BUTTON_TYPE,s);
+            x += SPLASH_BUTTON_WIDTH + SPLASH_BUTTON_MARGIN;
+            //initiate quit game button
+            sT = new SpriteType(QUIT_GAME_BUTTON_TYPE);
+            img = loadImage(imgPath + splashButtonsImageNames.get(2));
+            sT.addState(VISIBLE_STATE,img);
+            img = loadImage(imgPath + splashButtonsMouseOverImageNames.get(2));
+            sT.addState(MOUSE_OVER_STATE,img);
+            s = new Sprite(sT,x,y,0,0,VISIBLE_STATE);
+            guiButtons.put(QUIT_GAME_BUTTON_TYPE,s);
+            x += SPLASH_BUTTON_WIDTH + SPLASH_BUTTON_MARGIN;
+            //initiate scroll up button
+            ArrayList<String> scrollButtonsImageNames = props.getPropertyOptionsList(CrushSagaPropertyType.SCROLL_BUTTONS_IMAGE_NAMES);
+            ArrayList<String> scrollButtonsMouseOverImageNames = props.getPropertyOptionsList(CrushSagaPropertyType.SCROLL_BUTTONS_MOUSE_OVER_IMAGE_NAMES);
+            sT = new SpriteType(SCROLL_UP_BUTTON_TYPE);
+            img = loadImage(imgPath + scrollButtonsImageNames.get(0));
+            sT.addState(VISIBLE_STATE,img);
+            img = loadImage(imgPath + scrollButtonsMouseOverImageNames.get(0));
+            sT.addState(MOUSE_OVER_STATE,img);
+            s = new Sprite(sT,x,totalHeight/2,0,0,VISIBLE_STATE);
+            guiButtons.put(SCROLL_UP_BUTTON_TYPE,s);
+            //x += SPLASH_BUTTON_WIDTH + SPLASH_BUTTON_MARGIN;
+            //initiate scroll down button
+            sT = new SpriteType(SCROLL_DOWN_BUTTON_TYPE);
+            img = loadImage(imgPath + scrollButtonsImageNames.get(1));
+            sT.addState(VISIBLE_STATE,img);
+            img = loadImage(imgPath + scrollButtonsMouseOverImageNames.get(1));
+            sT.addState(MOUSE_OVER_STATE,img);
+            s = new Sprite(sT,x,totalHeight/2 + SCROLL_BUTTON_MARGIN,0,0,VISIBLE_STATE);
+            guiButtons.put(SCROLL_DOWN_BUTTON_TYPE,s);
+            //initiate level 1 button
+    }
+    
+    public void initData() {
+        data = new CrushSagaDataModel(this);
+        
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        int gameWidth = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_WIDTH.toString()));
+        int gameHeight = Integer.parseInt(props.getProperty(CrushSagaPropertyType.GAME_HEIGHT.toString()));
+        data.setGameDimensions(gameWidth, gameHeight);
+        
+        
+    }
+
+    
+    
+
+    @Override
+    public void initGUIHandlers() {
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        PlayGameHandler pgh = new PlayGameHandler(this);
+        guiButtons.get(PLAY_GAME_BUTTON_TYPE).setActionListener(pgh);
+        
+        
+    }
+
+    @Override
+    public void reset() {
+        
+    }
+
+    
+    public void updateGUI() {
+        Iterator<Sprite> buttonsIt = guiButtons.values().iterator();
+        while(buttonsIt.hasNext())
+        {
+            Sprite button = buttonsIt.next();
+            if(button.getState().equals(VISIBLE_STATE))
+            {
+                if(button.containsPoint(data.getLastMouseX(), data.getLastMouseY()))
+                {
+                    button.setState(MOUSE_OVER_STATE);
+                }
+            }else if(button.getState().equals(MOUSE_OVER_STATE))
+            {
+                if(!button.containsPoint(data.getLastMouseX(),data.getLastMouseY()))
+                {
+                    button.setState(VISIBLE_STATE);
+                }
+            }
+            
+        }
+    }
+
+    public boolean isCurrentScreenState(String testScreenState)
+    {
+        return testScreenState.equals(currentScreenState);
+    }
+    @Override
+    public void initAudioContent() {
+        
+    }
+    
+}
